@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rescue.team.dao.MemberDao">
+
+    <insert id="insertMember" parameterType="com.rescue.team.bean.Member">
+        INSERT INTO rescue_member
+        VALUES (#{mid},#{tid},#{vid})
+    </insert>
+
+    <select id="getMemberByTid" resultType="com.rescue.team.bean.Member">
+        SELECT * FROM rescue_member WHERE tid = #{tid}
+    </select>
+
+    <select id="getMemberByVid" resultType="com.rescue.team.bean.Member">
+        SELECT * FROM rescue_member WHERE vid = #{vid}
+    </select>
+
+</mapper>

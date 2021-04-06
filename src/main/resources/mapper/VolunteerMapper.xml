@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rescue.team.dao.VolunteerDao">
+
+    <insert id="insertVolunteer" parameterType="com.rescue.team.bean.Volunteer">
+        INSERT INTO rescue_volunteer
+        VALUES (#{vid},#{tel},#{name},#{status},#{gender},#{profession},#{transportation},#{front_card},#{back_card},#{longitude},#{latitude},#{province},#{city},#{district},#{address},#{place})
+    </insert>
+
+    <select id="getVolunteerByVid" resultType="com.rescue.team.bean.Volunteer">
+        SELECT * FROM rescue_volunteer WHERE vid = #{vid}
+    </select>
+
+    <select id="getVolunteerByTel" resultType="com.rescue.team.bean.Volunteer">
+        SELECT * FROM rescue_volunteer WHERE tel = #{tel}
+    </select>
+
+    <update id="changeVolunteer" parameterType="com.rescue.team.bean.Volunteer">
+        UPDATE rescue_volunteer
+        SET tel = #{tel},name = #{name},status = #{status},gender = #{gender},profession = #{profession},transportation = #{transportation},front_card = #{front_card},back_ground = #{back_ground},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
+        WHERE vid = #{vid}
+    </update>
+
+    <delete id="deleteVolunteer" parameterType="java.lang.String">
+        DELETE FROM rescue_volunteer WHERE vid = #{vid}
+    </delete>
+
+    <update id="passVerification" parameterType="java.lang.String">
+        UPDATE rescue_volunteer
+        SET status = 1
+        WHERE vid = #{vid}
+    </update>
+
+    <update id="beBusy" parameterType="java.lang.String">
+        UPDATE rescue_volunteer
+        SET status = 2
+        WHERE vid = #{vid}
+    </update>
+
+    <update id="beIdle" parameterType="java.lang.String">
+        UPDATE rescue_volunteer
+        SET status = 1
+        WHERE vid = #{vid}
+    </update>
+
+</mapper>

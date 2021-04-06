@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rescue.team.dao.TaskDao">
+
+    <insert id="insertTask" parameterType="com.rescue.team.bean.Task">
+        INSERT INTO rescue_task
+        VALUES (#{tid},#{code},#{start},#{end},#{eid},#{description},#{longitude},#{latitude},#{province},#{city},#{district},#{address},#{place})
+    </insert>
+
+    <select id="getTaskByTid" resultType="com.rescue.team.bean.Task" parameterType="java.lang.String">
+        SELECT * FROM rescue_task WHERE tid = #{tid}
+    </select>
+
+    <select id="getTaskByCode" resultType="com.rescue.team.bean.Task" parameterType="java.lang.String">
+        SELECT * FROM rescue_task WHERE code = #{code}
+    </select>
+
+    <update id="changeTask" parameterType="com.rescue.team.bean.Task" >
+        UPDATE rescue_task
+        SET code = #{code},start = #{start},end = #{end},eid = #{eid},description = #{description},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
+        WHERE tid = #{tid}
+    </update>
+
+    <delete id="deleteTask" parameterType="java.lang.String" >
+        DELETE FROM rescue_task WHERE tid = #{tid}
+    </delete>
+
+    <select id="getGoingTasks" resultType="com.rescue.team.bean.Task">
+        SELECT * FROM rescue_task WHERE end = null
+    </select>
+
+</mapper>

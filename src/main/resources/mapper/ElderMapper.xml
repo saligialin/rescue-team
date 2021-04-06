@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rescue.team.dao.ElderDao">
+
+    <insert id="insertElder" parameterType="com.rescue.team.bean.Elder">
+        INSERT INTO rescue_elder
+        VALUES (#{eid},#{name},#{gender},#{birthday},#{height},#{condition},#{front_card},#{back_card},#{uid},#{status},#{longitude},#{latitude},#{province},#{city},#{district},#{address},#{place})
+    </insert>
+
+    <select id="getElderByEid" resultType="com.rescue.team.bean.Elder" parameterType="java.lang.String">
+        SELECT * FROM rescue_elder WHERE eid = #{eid}
+    </select>
+
+    <update id="changeElder" parameterType="com.rescue.team.bean.Elder">
+        UPDATE rescue_elder
+        SET name = #{name},gender = #{gender},birthday = #{birthday},height = #{height},condition = #{condition},front_card = #{front_card},back_card = #{back_card},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
+        WHERE eid = #{eid}
+    </update>
+
+    <delete id="deleteElder" parameterType="java.lang.String" >
+        DELETE FROM rescue_elder WHERE eid = #{eid}
+    </delete>
+
+    <update id="passVerification" parameterType="java.lang.String">
+        UPDATE rescue_elder
+        SET status = 1
+        WHERE eid = #{eid}
+    </update>
+
+    <select id="getElderByUid" resultType="com.rescue.team.bean.Elder">
+        SELECT * FROM rescue_elder WHERE uid = #{uid}
+    </select>
+
+</mapper>

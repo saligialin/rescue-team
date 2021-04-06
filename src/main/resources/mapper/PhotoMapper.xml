@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rescue.team.dao.PhotoDao">
+
+    <insert id="insertPhoto" parameterType="com.rescue.team.bean.Photo">
+        INSERT INTO rescue_photo
+        VALUES (#{pid},#{eid},#{photo1},#{photo2},#{photo3},#{photo4},#{photo5},#{photo6},#{photo7},#{photo8},#{photo9})
+    </insert>
+
+    <select id="getPhotoByEid" resultType="com.rescue.team.bean.Photo">
+        SELECT * FROM rescue_photo WHERE eid = #{eid}
+    </select>
+
+    <update id="changePhoto" parameterType="com.rescue.team.bean.Photo">
+        UPDATE rescue_photo
+        SET photo1 = #{photo1},photo2 = #{photo2},photo3 = #{photo3},photo4 = #{photo4},photo5 = #{photo5},photo6 = #{photo6},photo7 = #{photo7},photo8 = #{photo8},photo9 = #{photo9}
+        WHERE pid = #{pid}
+    </update>
+
+    <delete id="deletePhoto" parameterType="java.lang.String">
+        DELETE FROM rescue_photo WHERE pid = #{pid}
+    </delete>
+
+</mapper>
