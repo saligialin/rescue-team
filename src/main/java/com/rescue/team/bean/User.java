@@ -1,5 +1,6 @@
 package com.rescue.team.bean;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class User {
     @ApiModelProperty(name = "tel", value = "用户手机号码")
     private String tel;
 
+    @JsonBackReference("密码")
     @ApiModelProperty(name = "password", value = "用户密码")
     private String password;
 
