@@ -6,9 +6,12 @@ import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.MsgSendService;
 import com.rescue.team.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -26,6 +29,9 @@ public class UserController {
     @Autowired
     private MsgSendService msgSendService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @ApiOperation(value = "获取短信验证码")
     @PostMapping("/getMsgCode")
     public ResponseData getCode(@RequestParam("tel") String tel) {
@@ -42,21 +48,76 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "用户注册")
     @PostMapping("/register")
-    public ResponseData doRegister(@RequestParam("tel")String tel,@RequestParam("password") String password,@RequestParam("code") String code) {
-        boolean b = msgSendService.checkCode(tel, code);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tel",value = "手机号",type = "String"),
+            @ApiImplicitParam(name = "password",value = "密码",type = "String"),
+            @ApiImplicitParam(name = "code",value = "验证码",type = "String")
+    })
+    public ResponseData doRegister(@RequestBody Map<String, String> parameter) {
+        User user = new User();
+        user.setTel(parameter.get("tel"));
+        user.setPassword(parameter.get("password"));
+        String code = parameter.get("code");
+        User u = userService.getUserByTel(user.getTel());
+        if(u!=null) return new ResponseData(ResponseState.USER_IS_EXIST.getValue(), ResponseState.USER_IS_EXIST.getMessage());
+        boolean b = msgSendService.checkCode(user.getTel(), code);
         if(b) {
-            return null;
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            boolean insertUser = userService.insertUser(user);
+            if(insertUser) {
+                return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+            } else {
+                return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+            }
         } else {
             return new ResponseData(ResponseState.VERIFIED_CODE_ERROR.getValue(), ResponseState.VERIFIED_CODE_ERROR.getMessage());
         }
     }
 
+    @ApiOperation(value = "用户通过密码登录")
     @PostMapping("/loginByPassword")
-    public ResponseData doLogin(@RequestParam("tel") String tel,@RequestParam("password") String password) {
-        System.out.println(tel);
-        System.out.println(password);
-        return null;
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tel",value = "手机号",type = "String"),
+            @ApiImplicitParam(name = "password",value = "密码",type = "String")
+    })
+    public ResponseData doLoginByPassword(@RequestBody Map<String, String> parameter) {
+        String tel = parameter.get("tel");
+        String password = parameter.get("password");
+
+        User user = userService.getUserByTel(tel);
+        if(user == null) return new ResponseData(ResponseState.USER_NOT_EXIST.getValue(), ResponseState.USER_NOT_EXIST.getMessage());
+        boolean matches = passwordEncoder.matches(password, user.getPassword());
+        if(matches) {
+            Map<String,Object> data = new HashMap<>();
+            data.put("user",user);
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(),data);
+        } else {
+            return new ResponseData(ResponseState.PASSWORD_ERROR.getValue(), ResponseState.PASSWORD_ERROR.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "用户通过验证码登录")
+    @PostMapping("/loginByMessage")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tel",value = "手机号",type = "String"),
+            @ApiImplicitParam(name = "code",value = "验证码",type = "String")
+    })
+    public ResponseData doLoginByMessage(@RequestBody Map<String, String> parameter) {
+        String tel = parameter.get("tel");
+        String code = parameter.get("code");
+
+        User user = userService.getUserByTel(tel);
+        if(user == null) return new ResponseData(ResponseState.USER_NOT_EXIST.getValue(), ResponseState.USER_NOT_EXIST.getMessage());
+        boolean b = msgSendService.checkCode(tel, code);
+        if(b) {
+            Map<String,Object> data = new HashMap<>();
+            data.put("user",user);
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(),data);
+        } else {
+            return new ResponseData(ResponseState.VERIFIED_CODE_ERROR.getValue(), ResponseState.VERIFIED_CODE_ERROR.getMessage());
+        }
     }
 
     /**
@@ -68,7 +129,7 @@ public class UserController {
     @PostMapping("/addUser")
     public ResponseData addUser(@RequestBody User postUser) {
         boolean b = userService.insertUser(postUser);
-        if(b) {
+        if(b){
             User user = userService.getUserByUid(postUser.getUid());
             user.setPassword(null);
             Map<String,Object> data = new HashMap<>();
