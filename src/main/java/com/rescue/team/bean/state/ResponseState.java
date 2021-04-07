@@ -15,7 +15,10 @@ public enum ResponseState {
     File_IS_EMPTY("文件为空",108),
     RESULT_IS_NULL("返回结果为空",109),
     ALREADY_DID_IT("此行为已经操作过",110),
-    TASK_NOT_EXIST("任务不存在",111)
+    TASK_NOT_EXIST("任务不存在",111),
+    TOKEN_NOT_PROVIDE("未提供token",112),
+    TOKEN_IS_ERROR("token错误",113),
+    TOKEN_IS_EXPIRED("token过期",114)
     ;
 
     private String message;
