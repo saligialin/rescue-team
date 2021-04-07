@@ -26,7 +26,7 @@ public class JwtUtil {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    private static final Long ACCESS_TOKEN_EXPIRATION = 2*3600L*1000;
+    private static final Long ACCESS_TOKEN_EXPIRATION = 14*3600L*1000;
 
     private static final Long REFRESH_TOKEN_EXPIRATION = 14*24*3600L*1000;
 
