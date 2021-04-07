@@ -5,17 +5,20 @@ import com.rescue.team.bean.User;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.MsgSendService;
 import com.rescue.team.service.UserService;
+import com.rescue.team.utils.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -31,6 +34,12 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @ApiOperation(value = "获取短信验证码")
     @PostMapping("/getMsgCode")
@@ -92,6 +101,9 @@ public class UserController {
         if(matches) {
             Map<String,Object> data = new HashMap<>();
             data.put("user",user);
+            String token = jwtUtil.getToken(user.getUid());
+            redisTemplate.opsForValue().set("user-"+user.getUid(),token,14, TimeUnit.DAYS);
+            data.put("token",token);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(),data);
         } else {
             return new ResponseData(ResponseState.PASSWORD_ERROR.getValue(), ResponseState.PASSWORD_ERROR.getMessage());
@@ -114,10 +126,27 @@ public class UserController {
         if(b) {
             Map<String,Object> data = new HashMap<>();
             data.put("user",user);
+            String token = jwtUtil.getToken(user.getUid());
+            redisTemplate.opsForValue().set("user-"+user.getUid(),token,14, TimeUnit.DAYS);
+            data.put("token",token);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(),data);
         } else {
             return new ResponseData(ResponseState.VERIFIED_CODE_ERROR.getValue(), ResponseState.VERIFIED_CODE_ERROR.getMessage());
         }
+    }
+
+    @ApiOperation("更新token")
+    @PostMapping("/refreshToken")
+    public ResponseData refreshToken(@RequestBody String token) throws Exception {
+        User user = jwtUtil.getUser(token);
+        if(user==null) return new ResponseData(ResponseState.TOKEN_IS_ERROR.getValue(), ResponseState.TOKEN_IS_ERROR.getMessage());
+        String redisToken = redisTemplate.opsForValue().get("user-" + user.getUid());
+        if(!redisToken.equals(token)) return new ResponseData(ResponseState.TOKEN_IS_ERROR.getValue(), ResponseState.TOKEN_IS_ERROR.getMessage());
+        String refreshToken = jwtUtil.getToken(user.getUid());
+        redisTemplate.opsForValue().set("user-"+user.getUid(),token,14,TimeUnit.DAYS);
+        Map<String,Object> data = new HashMap<>();
+        data.put("token",refreshToken);
+        return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
     }
 
     /**

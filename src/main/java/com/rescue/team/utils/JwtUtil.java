@@ -86,4 +86,11 @@ public class JwtUtil {
         return user;
     }
 
+    public User getUser(String token) throws Exception {
+        Claims claims=Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        String userId= (String) claims.get("userId");
+        User user = userService.getUserByUid(userId);
+        return user;
+    }
+
 }
