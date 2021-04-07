@@ -28,7 +28,7 @@ public class MsgSendServiceImpl implements MsgSendService {
     @Value("${tencentcloud.message.secretKey}")
     private String secretKey;
 
-    @Value("${tencentcloud.message.secretKey}")
+    @Value("${tencentcloud.message.url}")
     private String url;
 
     @Autowired
@@ -52,7 +52,7 @@ public class MsgSendServiceImpl implements MsgSendService {
             String[] phoneNumberSet1 = {nTel};
             req.setPhoneNumberSet(phoneNumberSet1);
 
-            req.setTemplateID("904170");
+            req.setTemplateID("916863");
             req.setSign("归家行动救援平台");
 
             String code = VerificationCodeUtil.getCode();
