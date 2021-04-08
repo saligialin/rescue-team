@@ -28,7 +28,6 @@ public class VolunteerServiceImpl implements VolunteerService {
     public boolean insertVolunteer(Volunteer volunteer) {
         log.info("开始插入新的志愿者信息");
         try {
-            volunteer.setVid(IdUtil.generateId());
             volunteer.setStatus(0);
             boolean b = volunteerDao.insertVolunteer(volunteer);
             log.info("插入新的志愿者信息结束");

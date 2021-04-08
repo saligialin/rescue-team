@@ -1,9 +1,6 @@
 package com.rescue.team.controller;
 
-import com.rescue.team.bean.Member;
-import com.rescue.team.bean.ResponseData;
-import com.rescue.team.bean.Task;
-import com.rescue.team.bean.Volunteer;
+import com.rescue.team.bean.*;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.MemberService;
 import com.rescue.team.service.TaskService;
@@ -11,10 +8,8 @@ import com.rescue.team.service.VolunteerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +44,8 @@ public class VolunteerController {
 
     @ApiOperation("增加待审批志愿者")
     @PostMapping("/add")
-    public ResponseData addVolunteer(@RequestBody Volunteer volunteer) {
+    public ResponseData addVolunteer(@RequestBody Volunteer volunteer, @ApiIgnore @ModelAttribute("user")User user) {
+        volunteer.setVid(user.getUid());
         boolean b = volunteerService.insertVolunteer(volunteer);
         if (b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
