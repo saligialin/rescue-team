@@ -25,6 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
             "/user/loginByMessage",
             "/user/register",
             "/user/refreshToken",
+            "/file/uploadFile",
             "/error",
             "/static/**",
             "/webjars/**",
