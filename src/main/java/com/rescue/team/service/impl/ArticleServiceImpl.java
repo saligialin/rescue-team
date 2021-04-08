@@ -14,7 +14,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
-    ArticleDao articleDao;
+    private ArticleDao articleDao;
 
     @Override
     public List<Article> getArticles() {

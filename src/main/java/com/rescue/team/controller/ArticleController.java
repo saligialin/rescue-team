@@ -21,7 +21,7 @@ import java.util.Map;
 public class ArticleController {
 
     @Autowired
-    ArticleService articleService;
+    private ArticleService articleService;
 
     @ApiOperation("获取最近15篇文章")
     @PostMapping("/get15")

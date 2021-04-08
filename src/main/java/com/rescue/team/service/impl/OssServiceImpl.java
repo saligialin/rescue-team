@@ -15,6 +15,7 @@ import java.io.InputStream;
 @Slf4j
 @Service
 public class OssServiceImpl implements OssService {
+
     @Value("${oss.endpoint}")
     private String endpoint;
 

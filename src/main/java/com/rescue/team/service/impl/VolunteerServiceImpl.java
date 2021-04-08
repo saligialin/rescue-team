@@ -19,10 +19,10 @@ import java.util.List;
 public class VolunteerServiceImpl implements VolunteerService {
 
     @Autowired
-    VolunteerDao volunteerDao;
+    private VolunteerDao volunteerDao;
 
     @Autowired
-    ElderDao elderDao;
+    private ElderDao elderDao;
 
     @Override
     public boolean insertVolunteer(Volunteer volunteer) {

@@ -15,7 +15,7 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     @Autowired
-    MemberDao memberDao;
+    private MemberDao memberDao;
 
     @Override
     public boolean insertMember(Member member) {

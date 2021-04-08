@@ -32,7 +32,7 @@ public class MsgSendServiceImpl implements MsgSendService {
     private String url;
 
     @Autowired
-    StringRedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public boolean sendVerifiedCode(String tel) {

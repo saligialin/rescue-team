@@ -15,7 +15,7 @@ import java.util.List;
 public class ElderServiceImpl implements ElderService {
 
     @Autowired
-    ElderDao elderDao;
+    private ElderDao elderDao;
 
     @Override
     public boolean insertElder(Elder elder) {
