@@ -20,19 +20,19 @@ public class OssServiceImpl implements OssService {
     @Value("${oss.endpoint}")
     private String endpoint;
 
-    @Value("${oss.endpoint}")
+    @Value("${oss.accessKeyId}")
     private String accessKeyId;
 
-    @Value("${oss.endpoint}")
+    @Value("${oss.accessKeySecret}")
     private String accessKeySecret;
 
-    @Value("${oss.endpoint}")
+    @Value("${oss.bucketName}")
     private String bucketName;
 
-    @Value("${oss.endpoint}")
+    @Value("${oss.domain}")
     private String domain;
 
-    @Value("${oss.endpoint}")
+    @Value("${oss.tail}")
     private String tail;
 
     @Override
