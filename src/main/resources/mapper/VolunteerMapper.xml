@@ -45,4 +45,26 @@
         WHERE vid = #{vid}
     </update>
 
+    <update id="beFault" parameterType="java.lang.String">
+        UPDATE rescue_volunteer
+        SET status = 3
+        WHERE vid = #{vid}
+    </update>
+
+    <select id="getTelsByDistrict" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT tel FROM rescue_volunteer WHERE district = #{district}
+    </select>
+
+    <select id="getCountByDistrict" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        SELECT COUNT(*) FROM rescue_volunteer WHERE district = #{district}
+    </select>
+
+    <select id="getTelsByCity" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT tel FROM rescue_volunteer WHERE city = #{city}
+    </select>
+
+    <select id="getCountByCity" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        SELECT COUNT(*) FROM rescue_volunteer WHERE city = #{city}
+    </select>
+
 </mapper>

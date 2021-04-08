@@ -1,6 +1,9 @@
 package com.rescue.team.service.impl;
 
+import com.rescue.team.bean.Elder;
+import com.rescue.team.bean.Task;
 import com.rescue.team.bean.Volunteer;
+import com.rescue.team.dao.ElderDao;
 import com.rescue.team.dao.VolunteerDao;
 import com.rescue.team.service.VolunteerService;
 import com.rescue.team.utils.IdUtil;
@@ -10,12 +13,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Slf4j
 @Service
 public class VolunteerServiceImpl implements VolunteerService {
 
     @Autowired
     VolunteerDao volunteerDao;
+
+    @Autowired
+    ElderDao elderDao;
 
     @Override
     public boolean insertVolunteer(Volunteer volunteer) {
@@ -132,17 +139,27 @@ public class VolunteerServiceImpl implements VolunteerService {
     }
 
     @Override
-    public List<String> getTelsByArea(String area) {
-        log.info("开始获取地区周围的志愿者手机号");
+    public boolean beFault(String vid) {
+        log.info("志愿者ID为"+vid+"的志愿者设备故障报备");
         try {
-            area = "%"+area+"%";
-            List<String> tels = volunteerDao.getTelsByArea(area);
-            log.info("获取地区周围的志愿者手机号结束");
-            return tels;
+            boolean b = volunteerDao.beFault(vid);
+            log.info("志愿者ID为"+vid+"的志愿者更改状态成功");
+            return b;
         } catch (Exception e) {
-            log.info("获取地区周围的志愿者手机号异常：");
+            log.info("志愿者ID为"+vid+"的志愿者更改状态异常：");
             log.info(e.toString());
-            return null;
+            return false;
+        }
+    }
+
+    @Override
+    public List<String> getVolunteerTels(Task task) {
+        Integer countByDistrict = volunteerDao.getCountByDistrict(task.getDistrict());
+        Elder elder = elderDao.getElderByEid(task.getEid());
+        if(countByDistrict<elder.getLevel()*10+10) {
+            return volunteerDao.getTelsByCity(task.getCity());
+        } else {
+            return volunteerDao.getTelsByDistrict(task.getDistrict());
         }
     }
 }

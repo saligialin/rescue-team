@@ -40,14 +40,12 @@ public class TaskController {
         task.setCode(code);
         boolean b = taskService.insertTask(task);
         if(b) {
-            String area = null;
-            /*对task的任务地区进行细化操作，待实现*/
-            List<String> tels = volunteerService.getTelsByArea(area);
+            List<String> tels = volunteerService.getVolunteerTels(task);
+            if(tels==null) return new ResponseData(ResponseState.NO_VOLUNTEER_HERE.getValue(), ResponseState.NO_VOLUNTEER_HERE.getMessage());
             try {
                 boolean sendTaskCode = msgSendService.sendTaskCode(tels, code);
-                Map<String, Object> data = new HashMap<>();
-                data.put("task",task);
-                return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(),data);
+                if(sendTaskCode) return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+                else return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
             } catch (Exception e) {
                 return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
             }

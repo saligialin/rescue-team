@@ -1,5 +1,6 @@
 package com.rescue.team.service;
 
+import com.rescue.team.bean.Task;
 import com.rescue.team.bean.Volunteer;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +25,7 @@ public interface VolunteerService {
 
     boolean beIdle(String vid);
 
-    List<String> getTelsByArea(String area);
+    boolean beFault(String vid);
+
+    List<String> getVolunteerTels(Task task);
 }

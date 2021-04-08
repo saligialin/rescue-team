@@ -24,5 +24,13 @@ public interface VolunteerDao {
 
     boolean beIdle(String vid);
 
-    List<String> getTelsByArea(String area);
+    boolean beFault(String vid);
+
+    List<String> getTelsByDistrict(String district);
+
+    Integer getCountByDistrict(String district);
+
+    List<String> getTelsByCity(String city);
+
+    Integer getCountByCity(String city);
 }
