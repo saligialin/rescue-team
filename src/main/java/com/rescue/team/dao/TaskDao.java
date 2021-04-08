@@ -18,6 +18,6 @@ public interface TaskDao {
 
     boolean deleteTask(String tid);
 
-    List<Task> getGoingTasks();
+    List<Task> getGoingTasksByDistrict(String district);
 
 }

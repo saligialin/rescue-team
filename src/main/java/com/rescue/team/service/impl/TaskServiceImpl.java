@@ -89,10 +89,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getGoingTasks() {
+    public List<Task> getGoingTasksByDistrict(String district) {
         log.info("开始获取正在进行中的任务");
         try {
-            List<Task> goingTasks = taskDao.getGoingTasks();
+            List<Task> goingTasks = taskDao.getGoingTasksByDistrict(district);
             log.info("获取正在进行中的任务结束");
             return goingTasks;
         } catch (Exception e) {
@@ -101,4 +101,5 @@ public class TaskServiceImpl implements TaskService {
             return null;
         }
     }
+
 }

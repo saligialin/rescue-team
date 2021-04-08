@@ -2,6 +2,7 @@ package com.rescue.team.controller;
 
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.Task;
+import com.rescue.team.bean.Volunteer;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.MsgSendService;
 import com.rescue.team.service.TaskService;
@@ -66,10 +67,26 @@ public class TaskController {
         }
     }
 
-    @ApiOperation("获取正在进行的任务")
-    @PostMapping("/getGoing")
-    public ResponseData getGoingTasks() {
-        List<Task> goingTasks = taskService.getGoingTasks();
+    @ApiOperation("获取任务大厅默认展示的任务")
+    @PostMapping("/getDefault")
+    public ResponseData getGoingTasks(String vid) {
+        Volunteer volunteer = volunteerService.getVolunteerByVid(vid);
+        List<Task> goingTasks = taskService.getGoingTasksByDistrict(volunteer.getDistrict());
+        if(goingTasks!=null) {
+            Map<String,Object> data = new HashMap<>();
+            for(int i=0; i<goingTasks.size(); i++) {
+                data.put("task"+i,goingTasks.get(i));
+            }
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
+        } else {
+            return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
+        }
+    }
+
+    @ApiOperation("获取任务大厅志愿者筛选的任务")
+    @PostMapping("/getSelect")
+    public ResponseData getSelectTask(String district) {
+        List<Task> goingTasks = taskService.getGoingTasksByDistrict(district);
         if(goingTasks!=null) {
             Map<String,Object> data = new HashMap<>();
             for(int i=0; i<goingTasks.size(); i++) {
