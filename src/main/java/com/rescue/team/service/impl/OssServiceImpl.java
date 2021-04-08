@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 
 @Slf4j
 @Service
@@ -42,6 +43,26 @@ public class OssServiceImpl implements OssService {
         try {
             InputStream inputStream = file.getInputStream();
             filePath = id + "/" + UuidUtil.getUUID() + "." + type;
+            ossClient.putObject(bucketName,filePath,inputStream);
+        } catch (IOException e) {
+            log.info(e.toString());
+            return "error";
+        }
+
+        return domain+filePath+tail;
+    }
+
+    @Override
+    public String uploadFile(MultipartFile file, String type) {
+        String filePath = null;
+        OSS ossClient = new OSSClientBuilder().build(endpoint,accessKeyId,accessKeySecret);
+
+        Calendar now = Calendar.getInstance();
+        String year = ""+now.get(Calendar.YEAR);
+
+        try {
+            InputStream inputStream = file.getInputStream();
+            filePath = year + "/" + UuidUtil.getUUID() + "." + type;
             ossClient.putObject(bucketName,filePath,inputStream);
         } catch (IOException e) {
             log.info(e.toString());
