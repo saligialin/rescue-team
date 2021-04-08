@@ -29,8 +29,8 @@ public class Elder {
     @ApiModelProperty(name = "height", value = "老年人身高")
     private Double height;
 
-    @ApiModelProperty(name = "condition", value = "老年人病情等级")
-    private Integer condition;
+    @ApiModelProperty(name = "level", value = "老年人病情等级")
+    private Integer level;
 
     @ApiModelProperty(name = "front_card", value = "老年人身份证正面照对应的img标签")
     private String front_card;

@@ -6,7 +6,7 @@
 
     <insert id="insertElder" parameterType="com.rescue.team.bean.Elder">
         INSERT INTO rescue_elder
-        VALUES (#{eid},#{name},#{gender},#{birthday},#{height},#{condition},#{front_card},#{back_card},#{uid},#{status},#{longitude},#{latitude},#{province},#{city},#{district},#{address},#{place})
+        VALUES (#{eid},#{name},#{gender},#{birthday},#{height},#{level},#{front_card},#{back_card},#{uid},#{status},#{longitude},#{latitude},#{province},#{city},#{district},#{address},#{place})
     </insert>
 
     <select id="getElderByEid" resultType="com.rescue.team.bean.Elder" parameterType="java.lang.String">
@@ -15,7 +15,7 @@
 
     <update id="changeElder" parameterType="com.rescue.team.bean.Elder">
         UPDATE rescue_elder
-        SET name = #{name},gender = #{gender},birthday = #{birthday},height = #{height},condition = #{condition},front_card = #{front_card},back_card = #{back_card},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
+        SET name = #{name},gender = #{gender},birthday = #{birthday},height = #{height},level = #{level},front_card = #{front_card},back_card = #{back_card},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
         WHERE eid = #{eid}
     </update>
 
