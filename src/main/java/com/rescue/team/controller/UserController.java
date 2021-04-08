@@ -154,8 +154,8 @@ public class UserController {
      * @param postUser
      * @return 成功返回状态码、状态信息和更改后的User信息。失败返回状态码和状态信息
      */
-    @ApiOperation("新增用户信息")
-    @PostMapping("/addUser")
+//    @ApiOperation("新增用户信息")
+//    @PostMapping("/addUser")
     public ResponseData addUser(@RequestBody User postUser) {
         boolean b = userService.insertUser(postUser);
         if(b){
