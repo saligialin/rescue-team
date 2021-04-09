@@ -1,10 +1,12 @@
 package com.rescue.team.controller;
 
+import com.rescue.team.bean.Photo;
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.Task;
 import com.rescue.team.bean.Volunteer;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.MsgSendService;
+import com.rescue.team.service.PhotoService;
 import com.rescue.team.service.TaskService;
 import com.rescue.team.service.VolunteerService;
 import com.rescue.team.utils.VerificationCodeUtil;
@@ -34,9 +36,14 @@ public class TaskController {
     @Autowired
     private VolunteerService volunteerService;
 
+    @Autowired
+    private PhotoService photoService;
+
     @ApiOperation("新增任务|传参除结束时间end、tid、code之外全部")
     @PostMapping("/addTask")
     public ResponseData addTask(@RequestBody Task task) {
+        Photo photo = photoService.getPhotoByEid(task.getEid());
+        if(photo.getPhoto1()==null) return new ResponseData(ResponseState.ELDER_NO_PHOTO.getValue(), ResponseState.ELDER_NO_PHOTO.getMessage());
         String code = VerificationCodeUtil.getCode();
         task.setCode(code);
         boolean b = taskService.insertTask(task);
