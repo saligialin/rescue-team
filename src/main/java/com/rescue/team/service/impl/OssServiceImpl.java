@@ -82,4 +82,21 @@ public class OssServiceImpl implements OssService {
 
         return domain+filePath+tail;
     }
+
+    @Override
+    public String uploadFace(MultipartFile file, String type) {
+        String filePath = null;
+        OSS ossClient = new OSSClientBuilder().build(endpoint,accessKeyId,accessKeySecret);
+
+        try {
+            InputStream inputStream = file.getInputStream();
+            filePath = "face/" + UuidUtil.getUUID() + "." + type;
+            ossClient.putObject(bucketName,filePath,inputStream);
+        } catch (IOException e) {
+            log.info(e.toString());
+            return "error";
+        }
+
+        return domain+filePath+tail;
+    }
 }

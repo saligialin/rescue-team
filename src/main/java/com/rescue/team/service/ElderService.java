@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface ElderService {
 
-    boolean insertElder(Elder elder);
+    String insertElder(Elder elder);
 
     Elder getElderByEid(String eid);
 

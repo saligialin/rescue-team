@@ -135,7 +135,12 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
-
+        <!-- 阿里人脸 -->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>facebody20191230</artifactId>
+            <version>1.0.10</version>
+        </dependency>
 
     </dependencies>
 

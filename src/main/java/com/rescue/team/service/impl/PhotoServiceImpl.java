@@ -69,4 +69,18 @@ public class PhotoServiceImpl implements PhotoService {
             return false;
         }
     }
+
+    @Override
+    public boolean insertOnePhoto(String eid, String photo, String which) {
+        log.info("为id为"+eid+"的老人增加"+which);
+        try {
+            boolean b = photoDao.insertOnePhoto(eid, photo, which);
+            log.info("结束操作");
+            return b;
+        } catch (Exception e) {
+            log.info("操作结束");
+            log.info(e.toString());
+            return false;
+        }
+    }
 }

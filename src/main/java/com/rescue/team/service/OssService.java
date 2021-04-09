@@ -9,4 +9,6 @@ public interface OssService {
     String uploadFile(MultipartFile file, String id, String type);
 
     String uploadFile(MultipartFile file, String type);
+
+    String uploadFace(MultipartFile file, String type);
 }

@@ -4,6 +4,7 @@ import com.rescue.team.bean.Elder;
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.ElderService;
+import com.rescue.team.service.FaceService;
 import com.rescue.team.service.PhotoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +30,9 @@ public class ElderController {
     @Autowired
     private PhotoService photoService;
 
+    @Autowired
+    private FaceService faceService;
+
     @ApiOperation("获取当前用户绑定的所有老人")
     @PostMapping("/getAll")
     @ApiParam(name = "uid", value = "当前用户ID", type = "String", required = true)
@@ -48,10 +52,11 @@ public class ElderController {
     @ApiOperation(("新增待审核老人"))
     @PostMapping("/add")
     public ResponseData addElder(@RequestBody Elder elder) {
-        boolean b = elderService.insertElder(elder);
-        if(b) {
+        String eid = elderService.insertElder(elder);
+        if(eid!=null) {
             Map<String,Object> data = new HashMap<>();
-            data.put("elder",elder);
+            data.put("elder",elderService.getElderByEid(eid));
+            boolean b = faceService.addEntity(eid);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
@@ -89,6 +94,21 @@ public class ElderController {
     public ResponseData deleteElder(@RequestBody String eid) {
         boolean b1 = elderService.deleteElder(eid);
         if(b1) {
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+        } else {
+            return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        }
+    }
+
+    @ApiOperation("为老人增加照片")
+    @PostMapping("/addPhoto")
+    public ResponseData addPhoto(@RequestBody Map<String,String> parameter) {
+        String eid = parameter.get("eid");
+        String photo = parameter.get("photo");
+        String which = parameter.get("which");
+        boolean b = photoService.insertOnePhoto(eid, photo, which);
+        if(b) {
+            boolean addFace = faceService.addFace(eid, photo);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());

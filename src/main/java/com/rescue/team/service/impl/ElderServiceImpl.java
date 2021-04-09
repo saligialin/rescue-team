@@ -3,6 +3,7 @@ package com.rescue.team.service.impl;
 import com.rescue.team.bean.Elder;
 import com.rescue.team.dao.ElderDao;
 import com.rescue.team.service.ElderService;
+import com.rescue.team.service.FaceService;
 import com.rescue.team.utils.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,19 @@ public class ElderServiceImpl implements ElderService {
     private ElderDao elderDao;
 
     @Override
-    public boolean insertElder(Elder elder) {
+    public String insertElder(Elder elder) {
         log.info("开始插入操作老年人信息");
         try {
             elder.setEid(IdUtil.generateId());
             elder.setStatus(0);
             boolean b = elderDao.insertElder(elder);
             log.info("插入操作老年人信息结束");
-            return b;
+            if(b) return elder.getEid();
+            else return null;
         } catch (Exception e) {
             log.info("插入操作老年人信息异常：");
             log.info(e.toString());
-            return false;
+            return null;
         }
     }
 

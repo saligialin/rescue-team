@@ -13,4 +13,6 @@ public interface PhotoDao {
     boolean changePhoto(Photo photo);
 
     boolean deletePhoto(String pid);
+
+    boolean insertOnePhoto(String eid, String photo, String which);
 }

@@ -87,4 +87,36 @@ public class FileController {
         }
     }
 
+    @ApiOperation("人脸识别照片上传")
+    @PostMapping("/uploadFace")
+    public ResponseData uploadFace(@RequestBody MultipartFile file) {
+        if (!file.isEmpty()) {
+            String filename = file.getOriginalFilename();
+            int index = 0;
+            String type = null;
+            if (filename != null) {
+                index = filename.lastIndexOf(".");
+                type = filename.substring(index+1);
+            } else {
+                return new ResponseData(ResponseState.FILE_NAME_NULL.getValue(), ResponseState.FILE_NAME_NULL.getMessage());
+            }
+
+            boolean isPicture = FileUtil.isPicture(type);
+            if(isPicture) {
+                String result = ossService.uploadFace(file,type);
+                if (result.equals("error")) {
+                    return new ResponseData(ResponseState.FILE_UPLOAD_ERROR.getValue(), ResponseState.FILE_UPLOAD_ERROR.getMessage());
+                } else {
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("url", result);
+                    return new ResponseData(ResponseState.FILE_UPLOAD_SUCCESS.getValue(), ResponseState.FILE_UPLOAD_SUCCESS.getMessage(), data);
+                }
+            } else {
+                return new ResponseData(ResponseState.FILE_TYPE_ERROR.getValue(), ResponseState.FILE_TYPE_ERROR.getMessage());
+            }
+        } else {
+            return new ResponseData(ResponseState.File_IS_EMPTY.getValue(), ResponseState.File_IS_EMPTY.getMessage());
+        }
+    }
+
 }

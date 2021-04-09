@@ -14,4 +14,6 @@ public interface PhotoService {
 
     boolean deletePhoto(String pid);
 
+    boolean insertOnePhoto(String eid, String photo, String which);
+
 }
