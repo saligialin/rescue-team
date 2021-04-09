@@ -58,11 +58,22 @@ public class OssServiceImpl implements OssService {
         OSS ossClient = new OSSClientBuilder().build(endpoint,accessKeyId,accessKeySecret);
 
         Calendar now = Calendar.getInstance();
-        String year = ""+now.get(Calendar.YEAR);
+        String data = ""+now.get(Calendar.YEAR);    //年
+        if((now.get(Calendar.MONTH) + 1)<10) {
+            data += "0"+(now.get(Calendar.MONTH) + 1);
+        } else {
+            data += (now.get(Calendar.MONTH) + 1);
+        }
+        //日
+        if(now.get(Calendar.DAY_OF_MONTH)<10) {
+            data += "0"+now.get(Calendar.DAY_OF_MONTH);
+        } else {
+            data += now.get(Calendar.DAY_OF_MONTH);
+        }
 
         try {
             InputStream inputStream = file.getInputStream();
-            filePath = year + "/" + UuidUtil.getUUID() + "." + type;
+            filePath = data + "/" + UuidUtil.getUUID() + "." + type;
             ossClient.putObject(bucketName,filePath,inputStream);
         } catch (IOException e) {
             log.info(e.toString());
