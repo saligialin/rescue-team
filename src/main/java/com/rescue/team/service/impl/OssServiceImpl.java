@@ -17,22 +17,22 @@ import java.util.Calendar;
 @Service
 public class OssServiceImpl implements OssService {
 
-    @Value("${oss.endpoint}")
+    @Value("${ali.oss.endpoint}")
     private String endpoint;
 
-    @Value("${oss.accessKeyId}")
+    @Value("${ali.oss.accessKeyId}")
     private String accessKeyId;
 
-    @Value("${oss.accessKeySecret}")
+    @Value("${ali.oss.accessKeySecret}")
     private String accessKeySecret;
 
-    @Value("${oss.bucketName}")
+    @Value("${ali.oss.bucketName}")
     private String bucketName;
 
-    @Value("${oss.domain}")
+    @Value("${ali.oss.domain}")
     private String domain;
 
-    @Value("${oss.tail}")
+    @Value("${ali.oss.tail}")
     private String tail;
 
     @Override
