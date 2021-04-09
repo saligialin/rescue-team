@@ -44,7 +44,7 @@ public class JwtUtil {
         header.put("alg","HS256");
         header.put("typ","JWT");
         Map<String,Object> claims = new HashMap<>();
-        claims.put("userID",userId);
+        claims.put("userId",userId);
         return Jwts.builder()
                 .setClaims(claims)
                 .setHeader(header)
@@ -62,7 +62,7 @@ public class JwtUtil {
         header.put("alg","HS256");
         header.put("typ","JWT");
         Map<String,Object> claims = new HashMap<>();
-        claims.put("userID",userId);
+        claims.put("userId",userId);
         return Jwts.builder()
                 .setClaims(claims)
                 .setHeader(header)
@@ -78,7 +78,7 @@ public class JwtUtil {
     public User getUser(String token, HttpServletRequest request) throws Exception {
         Claims claims=Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         String userId= (String) claims.get("userId");
-        String redisToken = redisTemplate.opsForValue().get("user-" + userId);
+        String redisToken = redisTemplate.opsForValue().get("user-"+userId);
         if(redisToken == null) throw new RedisTokenNullException();
         if(!redisToken.equals(token)) throw new TokenErrorException();
         User user = userService.getUserByUid(userId);
