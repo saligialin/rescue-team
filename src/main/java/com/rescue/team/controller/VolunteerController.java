@@ -91,7 +91,7 @@ public class VolunteerController {
     }
 
     @ApiOperation("志愿者设备故障|传参志愿者vid")
-    @PostMapping("/beBusy")
+    @PostMapping("/beFault")
     public ResponseData beFault(@RequestBody String vid) {
         boolean b = volunteerService.beFault(vid);
         if (b) {
