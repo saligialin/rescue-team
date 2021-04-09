@@ -23,7 +23,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @ApiOperation("获取最近15篇文章")
+    @ApiOperation("获取最近15篇文章|无参")
     @PostMapping("/get15")
     public ResponseData getArticles() {
         List<Article> articles = articleService.getArticles();

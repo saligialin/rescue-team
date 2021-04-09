@@ -1,5 +1,7 @@
 package com.rescue.team.controller;
 
+import com.rescue.team.annotation.ApiJsonObject;
+import com.rescue.team.annotation.ApiJsonProperty;
 import com.rescue.team.bean.*;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.MemberService;
@@ -29,10 +31,10 @@ public class VolunteerController {
     @Autowired
     private TaskService taskService;
 
-    @ApiOperation("获取当前用户对应的志愿者信息")
+    @ApiOperation("获取当前用户对应的志愿者信息|传参当前用户的uid")
     @PostMapping("/get")
-    public ResponseData getVolunteer(@RequestBody String tel) {
-        Volunteer volunteer = volunteerService.getVolunteerByTel(tel);
+    public ResponseData getVolunteer(@RequestBody String uid) {
+        Volunteer volunteer = volunteerService.getVolunteerByVid(uid);
         if(volunteer!=null) {
             Map<String, Object> data = new HashMap<>();
             data.put("volunteer",volunteer);
@@ -42,7 +44,7 @@ public class VolunteerController {
         }
     }
 
-    @ApiOperation("增加待审批志愿者")
+    @ApiOperation("增加待审批志愿者|传参除vid，status之外全部")
     @PostMapping("/add")
     public ResponseData addVolunteer(@RequestBody Volunteer volunteer, @ApiIgnore @ModelAttribute("user")User user) {
         volunteer.setVid(user.getUid());
@@ -54,7 +56,7 @@ public class VolunteerController {
         }
     }
 
-    @ApiOperation("更该志愿者信息")
+    @ApiOperation("更该志愿者信息|参数全传，修改的传修改后的，未修改的也传")
     @PostMapping("/change")
     public ResponseData changeVolunteer(@RequestBody Volunteer volunteer) {
         boolean b = volunteerService.changeVolunteer(volunteer);
@@ -65,7 +67,7 @@ public class VolunteerController {
         }
     }
 
-    @ApiOperation("注销志愿者服务")
+    @ApiOperation("注销志愿者服务|传参志愿者vid")
     @PostMapping("/delete")
     public ResponseData deleteVolunteer(@RequestBody String vid) {
         boolean b = volunteerService.deleteVolunteer(vid);
@@ -77,7 +79,7 @@ public class VolunteerController {
     }
 
 
-    @ApiOperation("志愿者状态更改为繁忙")
+    @ApiOperation("志愿者状态更改为繁忙|传参志愿者vid")
     @PostMapping("/beBusy")
     public ResponseData beBusy(@RequestBody String vid) {
         boolean b = volunteerService.beBusy(vid);
@@ -88,7 +90,18 @@ public class VolunteerController {
         }
     }
 
-    @ApiOperation("志愿者状态更改为空闲")
+    @ApiOperation("志愿者设备故障|传参志愿者vid")
+    @PostMapping("/beBusy")
+    public ResponseData beFault(@RequestBody String vid) {
+        boolean b = volunteerService.beFault(vid);
+        if (b) {
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+        } else {
+            return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        }
+    }
+
+    @ApiOperation("志愿者状态更改为空闲|传参志愿者vid")
     @PostMapping("byIdle")
     public ResponseData beIdle(@RequestBody String vid) {
         boolean b = volunteerService.beIdle(vid);
@@ -99,7 +112,7 @@ public class VolunteerController {
         }
     }
 
-    @ApiOperation("获取历史任务")
+    @ApiOperation("获取历史任务|传参志愿者vid")
     @PostMapping("/getMyTasks")
     public ResponseData getPastTasks(@RequestBody String vid) {
         List<Member> members = memberService.getMemberByVid(vid);
@@ -115,7 +128,7 @@ public class VolunteerController {
         }
     }
 
-    @ApiOperation("加入任务")
+    @ApiOperation("加入任务|传参志愿者vid、任务tid")
     @PostMapping("/joinTask")
     public ResponseData joinTask(@RequestBody Member postMember) {
         Member member = memberService.getMemberByTidAndVid(postMember.getTid(), postMember.getVid());
@@ -135,6 +148,15 @@ public class VolunteerController {
             }
         }
 
+    }
+
+    @ApiOperation("防BUG用，无视")
+    @PostMapping("/ggBug")
+    public ResponseData zzTest(@ApiJsonObject(name = "zzTest",value = {
+            @ApiJsonProperty( key = "zz", description = "zzz"),
+            @ApiJsonProperty( key = "zzz", description = "zz")
+    }) @RequestBody Map<String, Object> parameter) {
+        return null;
     }
 
 }

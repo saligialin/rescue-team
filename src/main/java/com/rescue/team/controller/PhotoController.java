@@ -1,8 +1,11 @@
 package com.rescue.team.controller;
 
+import com.rescue.team.annotation.ApiJsonObject;
+import com.rescue.team.annotation.ApiJsonProperty;
 import com.rescue.team.bean.Photo;
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.state.ResponseState;
+import com.rescue.team.service.FaceService;
 import com.rescue.team.service.PhotoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +26,10 @@ public class PhotoController {
     @Autowired
     private PhotoService photoService;
 
-    @ApiOperation("增加照片组")
+    @Autowired
+    private FaceService faceService;
+
+    @ApiOperation("增加照片组（应该用不到，用addPhoto请求逐张增加图片）")
     @PostMapping("/add")
     public ResponseData addPhoto(@RequestBody Photo photo) {
         boolean b = photoService.insertPhoto(photo);
@@ -36,7 +42,26 @@ public class PhotoController {
         }
     }
 
-    @ApiOperation("通过老人ID获得照片组")
+    @ApiOperation("为老人增加照片|which说明：第2张照片参数值为photo1',第2张照片参数值为photo2，同理类推...")
+    @PostMapping("/addPhoto")
+    public ResponseData addPhoto(@ApiJsonObject(name = "addPhoto",value = {
+            @ApiJsonProperty( key = "eid", description = "老人id"),
+            @ApiJsonProperty( key = "photo", description = "照片的url地址"),
+            @ApiJsonProperty( key = "which", description = "第几张照片")
+    }) @RequestBody Map<String,String> parameter) {
+        String eid = parameter.get("eid");
+        String photo = parameter.get("photo");
+        String which = parameter.get("which");
+        boolean b = photoService.insertOnePhoto(eid, photo, which);
+        if(b) {
+            boolean addFace = faceService.addFace(eid, photo);
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+        } else {
+            return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        }
+    }
+
+    @ApiOperation("通过老人ID获得照片组|传参老人的eid")
     @PostMapping("/get")
     public ResponseData getPhoto(@RequestBody String eid) {
         Photo photo = photoService.getPhotoByEid(eid);
@@ -49,7 +74,7 @@ public class PhotoController {
         }
     }
 
-    @ApiOperation("更改老人照片组信息")
+    @ApiOperation("更改老人照片组信息（摆设）")
     @PostMapping("/change")
     public ResponseData changePhoto(@RequestBody Photo photo) {
         boolean b = photoService.changePhoto(photo);
@@ -62,6 +87,8 @@ public class PhotoController {
         }
     }
 
+    @ApiOperation("删除老人照片组信息（摆设）")
+    @PostMapping("/delete")
     public ResponseData deletePhoto(@RequestBody String pid) {
         boolean b = photoService.deletePhoto(pid);
         if(b) {

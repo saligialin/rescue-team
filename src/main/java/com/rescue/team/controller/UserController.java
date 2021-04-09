@@ -1,5 +1,7 @@
 package com.rescue.team.controller;
 
+import com.rescue.team.annotation.ApiJsonObject;
+import com.rescue.team.annotation.ApiJsonProperty;
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.User;
 import com.rescue.team.bean.state.ResponseState;
@@ -7,8 +9,6 @@ import com.rescue.team.service.MsgSendService;
 import com.rescue.team.service.UserService;
 import com.rescue.team.utils.JwtUtil;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +41,9 @@ public class UserController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @ApiOperation(value = "获取短信验证码")
+    @ApiOperation(value = "获取短信验证码|传参手机号")
     @PostMapping("/getMsgCode")
-    public ResponseData getCode(@RequestParam("tel") String tel) {
+    public ResponseData getCode( @RequestBody String tel) {
         try {
             boolean b = msgSendService.sendVerifiedCode(tel);
             if(b) {
@@ -57,14 +57,13 @@ public class UserController {
         }
     }
 
-    @ApiOperation(value = "用户注册")
+    @ApiOperation(value = "用户注册|传参手机号、密码和验证码")
     @PostMapping("/register")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "tel",value = "手机号",type = "String"),
-            @ApiImplicitParam(name = "password",value = "密码",type = "String"),
-            @ApiImplicitParam(name = "code",value = "验证码",type = "String")
-    })
-    public ResponseData doRegister(@RequestBody Map<String, String> parameter) {
+    public ResponseData doRegister(@ApiJsonObject(name = "doRegister",value = {
+            @ApiJsonProperty( key = "tel", description = "手机号"),
+            @ApiJsonProperty( key = "password", description = "密码"),
+            @ApiJsonProperty( key = "code", description = "验证码")
+    }) @RequestBody Map<String, String> parameter){
         User user = new User();
         user.setTel(parameter.get("tel"));
         user.setPassword(parameter.get("password"));
@@ -85,13 +84,12 @@ public class UserController {
         }
     }
 
-    @ApiOperation(value = "用户通过密码登录")
+    @ApiOperation(value = "用户通过密码登录|传参手机号和密码")
     @PostMapping("/loginByPassword")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "tel",value = "手机号",type = "String"),
-            @ApiImplicitParam(name = "password",value = "密码",type = "String")
-    })
-    public ResponseData doLoginByPassword(@RequestBody Map<String, String> parameter) {
+    public ResponseData doLoginByPassword(@ApiJsonObject(name = "doLoginByPassword",value = {
+            @ApiJsonProperty( key = "tel", description = "手机号"),
+            @ApiJsonProperty( key = "password", description = "密码")
+    }) @RequestBody Map<String, String> parameter) {
         String tel = parameter.get("tel");
         String password = parameter.get("password");
 
@@ -110,13 +108,12 @@ public class UserController {
         }
     }
 
-    @ApiOperation(value = "用户通过验证码登录")
+    @ApiOperation(value = "用户通过验证码登录|传参手机号和验证码")
     @PostMapping("/loginByMessage")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "tel",value = "手机号",type = "String"),
-            @ApiImplicitParam(name = "code",value = "验证码",type = "String")
-    })
-    public ResponseData doLoginByMessage(@RequestBody Map<String, String> parameter) {
+    public ResponseData doLoginByMessage(@ApiJsonObject(name = "doLoginByMessage",value = {
+            @ApiJsonProperty( key = "tel", description = "手机号"),
+            @ApiJsonProperty( key = "code", description = "验证码")
+    }) @RequestBody Map<String, String> parameter)  {
         String tel = parameter.get("tel");
         String code = parameter.get("code");
 
@@ -135,7 +132,7 @@ public class UserController {
         }
     }
 
-    @ApiOperation("更新token")
+    @ApiOperation("更新token|传参为用户token")
     @PostMapping("/refreshToken")
     public ResponseData refreshToken(@RequestBody String token) throws Exception {
         User user = jwtUtil.getUser(token);
@@ -154,8 +151,8 @@ public class UserController {
      * @param postUser
      * @return 成功返回状态码、状态信息和更改后的User信息。失败返回状态码和状态信息
      */
-//    @ApiOperation("新增用户信息")
-//    @PostMapping("/addUser")
+    @ApiOperation("新增用户信息（摆设）")
+    @PostMapping("/addUser")
     public ResponseData addUser(@RequestBody User postUser) {
         boolean b = userService.insertUser(postUser);
         if(b){
@@ -174,7 +171,7 @@ public class UserController {
      * @param postUser
      * @return 成功返回状态码、状态信息和更改后的User信息。失败返回状态码和状态信息
      */
-    @ApiOperation("修改用户信息")
+    @ApiOperation("修改用户信息|参数全传，修改的传修改后的，未修改的也传")
     @PostMapping("/changeUser")
     public ResponseData changeUser(@RequestBody User postUser) {
         boolean b = userService.changeUser(postUser);
@@ -194,7 +191,7 @@ public class UserController {
      * @param uid
      * @return 成功返回状态码和状态信息。失败返回状态码和状态信息
      */
-    @ApiOperation("删除用户信息")
+    @ApiOperation("删除用户信息|传参用户的uid")
     @PostMapping("/deleteUser")
     public ResponseData deleteUser(@RequestBody String uid) {
         boolean b = userService.deleteUserByUid(uid);

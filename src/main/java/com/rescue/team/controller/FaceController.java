@@ -18,7 +18,7 @@ public class FaceController {
     @Autowired
     private FaceService faceService;
 
-    @ApiOperation("人脸对比接口")
+    @ApiOperation("人脸对比接口|传参待核实的老人的图片url")
     @RequestMapping("/compared")
     public ResponseData faceCompared(@RequestBody String photo) {
         boolean b = faceService.searchFace(photo);

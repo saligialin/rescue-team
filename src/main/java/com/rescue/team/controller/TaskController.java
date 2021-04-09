@@ -34,7 +34,7 @@ public class TaskController {
     @Autowired
     private VolunteerService volunteerService;
 
-    @ApiOperation("新增任务")
+    @ApiOperation("新增任务|传参除结束时间end、tid、code之外全部")
     @PostMapping("/addTask")
     public ResponseData addTask(@RequestBody Task task) {
         String code = VerificationCodeUtil.getCode();
@@ -56,7 +56,7 @@ public class TaskController {
 
     }
 
-    @ApiOperation("结束任务")
+    @ApiOperation("结束任务|传参全参")
     @PostMapping("/endTask")
     public ResponseData endTask(@RequestBody Task task) {
         boolean b = taskService.changeTask(task);
@@ -67,7 +67,7 @@ public class TaskController {
         }
     }
 
-    @ApiOperation("获取任务大厅默认展示的任务")
+    @ApiOperation("获取任务大厅默认展示的任务|传参志愿者vid")
     @PostMapping("/getDefault")
     public ResponseData getGoingTasks(String vid) {
         Volunteer volunteer = volunteerService.getVolunteerByVid(vid);
@@ -83,7 +83,7 @@ public class TaskController {
         }
     }
 
-    @ApiOperation("获取任务大厅志愿者筛选的任务")
+    @ApiOperation("获取任务大厅志愿者筛选的任务|传参最后所筛选县/区district")
     @PostMapping("/getSelect")
     public ResponseData getSelectTask(String district) {
         List<Task> goingTasks = taskService.getGoingTasksByDistrict(district);

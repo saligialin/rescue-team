@@ -23,7 +23,7 @@ public class FileController {
     @Autowired
     private OssService ossService;
 
-    @ApiOperation("前台上传图片")
+    @ApiOperation("前台上传图片|传参图片")
     @PostMapping("/upload")
     public ResponseData upload(@RequestBody MultipartFile file, @ApiIgnore @ModelAttribute("user")User user) {
         if (!file.isEmpty()) {
@@ -55,7 +55,7 @@ public class FileController {
         }
     }
 
-    @ApiOperation("后台上传图片")
+    @ApiOperation("后台上传图片|传参图片")
     @PostMapping("/uploadFile")
     public ResponseData upload(@RequestBody MultipartFile file) {
         if (!file.isEmpty()) {
@@ -87,7 +87,7 @@ public class FileController {
         }
     }
 
-    @ApiOperation("人脸识别照片上传")
+    @ApiOperation("人脸识别照片上传|传参图片")
     @PostMapping("/uploadFace")
     public ResponseData uploadFace(@RequestBody MultipartFile file) {
         if (!file.isEmpty()) {

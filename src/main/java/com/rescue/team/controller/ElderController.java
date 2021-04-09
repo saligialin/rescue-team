@@ -1,14 +1,14 @@
 package com.rescue.team.controller;
 
+import com.rescue.team.annotation.ApiJsonObject;
+import com.rescue.team.annotation.ApiJsonProperty;
 import com.rescue.team.bean.Elder;
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.ElderService;
 import com.rescue.team.service.FaceService;
-import com.rescue.team.service.PhotoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,14 +28,10 @@ public class ElderController {
     private ElderService elderService;
 
     @Autowired
-    private PhotoService photoService;
-
-    @Autowired
     private FaceService faceService;
 
-    @ApiOperation("获取当前用户绑定的所有老人")
+    @ApiOperation("获取当前用户绑定的所有老人|传参当前用户的uid")
     @PostMapping("/getAll")
-    @ApiParam(name = "uid", value = "当前用户ID", type = "String", required = true)
     public ResponseData getAll(@RequestBody String uid) {
         List<Elder> elders = elderService.getElderByUid(uid);
         if(elders != null) {
@@ -49,7 +45,7 @@ public class ElderController {
         }
     }
 
-    @ApiOperation(("新增待审核老人"))
+    @ApiOperation(("新增待审核老人|传参出eid、status之外全参"))
     @PostMapping("/add")
     public ResponseData addElder(@RequestBody Elder elder) {
         String eid = elderService.insertElder(elder);
@@ -63,7 +59,7 @@ public class ElderController {
         }
     }
 
-    @ApiOperation("根据eid获取老人信息")
+    @ApiOperation("根据eid获取老人信息|传参老人的eid")
     @PostMapping("/get")
     public ResponseData getElder(@RequestBody String eid) {
         Elder elder = elderService.getElderByEid(eid);
@@ -76,7 +72,7 @@ public class ElderController {
         }
     }
 
-    @ApiOperation("更改老人信息")
+    @ApiOperation("更改老人信息|参数全传，修改的传修改后的，未修改的也传")
     @PostMapping("/change")
     public ResponseData changeElder(@RequestBody Elder elder) {
         boolean b = elderService.changeElder(elder);
@@ -89,7 +85,7 @@ public class ElderController {
         }
     }
 
-    @ApiOperation("删除绑定的老人")
+    @ApiOperation("删除绑定的老人|传参老人的eid")
     @PostMapping("/delete")
     public ResponseData deleteElder(@RequestBody String eid) {
         boolean b1 = elderService.deleteElder(eid);
@@ -100,18 +96,4 @@ public class ElderController {
         }
     }
 
-    @ApiOperation("为老人增加照片")
-    @PostMapping("/addPhoto")
-    public ResponseData addPhoto(@RequestBody Map<String,String> parameter) {
-        String eid = parameter.get("eid");
-        String photo = parameter.get("photo");
-        String which = parameter.get("which");
-        boolean b = photoService.insertOnePhoto(eid, photo, which);
-        if(b) {
-            boolean addFace = faceService.addFace(eid, photo);
-            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
-        } else {
-            return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
-        }
-    }
 }
