@@ -78,7 +78,7 @@ public class TaskController {
 
     @ApiOperation("获取任务大厅默认展示的任务|传参志愿者vid")
     @PostMapping("/getDefault")
-    public ResponseData getGoingTasks(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "vid",example = "志愿者ID",type = "String")) @RequestBody Map<String,String> parameter) {
+    public ResponseData getGoingTasks(@ApiJsonObject(name = "getGoingTasks",value = @ApiJsonProperty(key = "vid",example = "志愿者ID")) @RequestBody Map<String,String> parameter) {
         String vid = parameter.get("vid");
         Volunteer volunteer = volunteerService.getVolunteerByVid(vid);
         List<Task> goingTasks = taskService.getGoingTasksByDistrict(volunteer.getDistrict());
@@ -95,7 +95,7 @@ public class TaskController {
 
     @ApiOperation("获取任务大厅志愿者筛选的任务|传参最后所筛选县/区district")
     @PostMapping("/getSelect")
-    public ResponseData getSelectTask(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "district",example = "县/区/同级行政单位",type = "String")) @RequestBody Map<String,String> parameter) {
+    public ResponseData getSelectTask(@ApiJsonObject(name = "getSelectTask",value = @ApiJsonProperty(key = "district",example = "县/区/同级行政单位")) @RequestBody Map<String,String> parameter) {
         String district = parameter.get("district");
         List<Task> goingTasks = taskService.getGoingTasksByDistrict(district);
         if(goingTasks!=null) {

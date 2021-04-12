@@ -31,7 +31,7 @@ public class PhotoController {
 
     @ApiOperation("增加照片组（应该用不到，用addPhoto请求逐张增加图片）")
     @PostMapping("/add")
-    public ResponseData addPhoto(@RequestBody Photo photo) {
+    public ResponseData addPhotos(@RequestBody Photo photo) {
         boolean b = photoService.insertPhoto(photo);
         if(b) {
             Map<String, Object> data = new HashMap<>();
@@ -63,7 +63,7 @@ public class PhotoController {
 
     @ApiOperation("通过老人ID获得照片组|传参老人的eid")
     @PostMapping("/get")
-    public ResponseData getPhoto(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "eid",example = "老人ID",type = "String")) @RequestBody Map<String,String> parameter) {
+    public ResponseData getPhoto(@ApiJsonObject(name = "getPhoto",value = @ApiJsonProperty(key = "eid",example = "老人ID")) @RequestBody Map<String,String> parameter) {
         String eid = parameter.get("eid");
         Photo photo = photoService.getPhotoByEid(eid);
         if(photo!=null) {
@@ -90,7 +90,7 @@ public class PhotoController {
 
     @ApiOperation("删除老人照片组信息（摆设）")
     @PostMapping("/delete")
-    public ResponseData deletePhoto(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "pid",example = "照片组ID",type = "String")) @RequestBody Map<String,String> parameter) {
+    public ResponseData deletePhoto(@ApiJsonObject(name = "deletePhoto",value = @ApiJsonProperty(key = "pid",example = "照片组ID")) @RequestBody Map<String,String> parameter) {
         String pid = parameter.get("pid");
         boolean b = photoService.deletePhoto(pid);
         if(b) {
