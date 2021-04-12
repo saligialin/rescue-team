@@ -160,7 +160,7 @@ public class VolunteerController {
 
     }
 
-    @ApiOperation("注销志愿者操作")
+    @ApiOperation("注销志愿者操作|传参志愿者ID：vid")
     @PostMapping("/deRegister")
     public ResponseData logout(@ApiJsonObject(name = "logout",value = @ApiJsonProperty(key = "vid",example = "志愿者ID")) @RequestBody Map<String,String> parameter) {
         String vid = parameter.get("vid");
