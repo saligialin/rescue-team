@@ -61,9 +61,9 @@ public class UserController {
     @ApiOperation(value = "用户注册|传参手机号、密码和验证码")
     @PostMapping("/register")
     public ResponseData doRegister(@ApiJsonObject(name = "doRegister",value = {
-            @ApiJsonProperty( key = "tel", description = "手机号"),
-            @ApiJsonProperty( key = "password", description = "密码"),
-            @ApiJsonProperty( key = "code", description = "验证码")
+            @ApiJsonProperty( key = "tel", example = "手机号"),
+            @ApiJsonProperty( key = "password", example = "密码"),
+            @ApiJsonProperty( key = "code", example = "验证码")
     }) @RequestBody Map<String, String> parameter){
         User user = new User();
         user.setTel(parameter.get("tel"));
@@ -88,8 +88,8 @@ public class UserController {
     @ApiOperation(value = "用户通过密码登录|传参手机号和密码")
     @PostMapping("/loginByPassword")
     public ResponseData doLoginByPassword(@ApiJsonObject(name = "doLoginByPassword",value = {
-            @ApiJsonProperty( key = "tel", description = "手机号"),
-            @ApiJsonProperty( key = "password", description = "密码")
+            @ApiJsonProperty( key = "tel", example = "手机号"),
+            @ApiJsonProperty( key = "password", example = "密码")
     }) @RequestBody Map<String, String> parameter) {
         String tel = parameter.get("tel");
         String password = parameter.get("password");
@@ -112,8 +112,8 @@ public class UserController {
     @ApiOperation(value = "用户通过验证码登录|传参手机号和验证码")
     @PostMapping("/loginByMessage")
     public ResponseData doLoginByMessage(@ApiJsonObject(name = "doLoginByMessage",value = {
-            @ApiJsonProperty( key = "tel", description = "手机号"),
-            @ApiJsonProperty( key = "code", description = "验证码")
+            @ApiJsonProperty( key = "tel", example = "手机号"),
+            @ApiJsonProperty( key = "code", example = "验证码")
     }) @RequestBody Map<String, String> parameter)  {
         String tel = parameter.get("tel");
         String code = parameter.get("code");

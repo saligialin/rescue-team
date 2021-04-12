@@ -45,9 +45,9 @@ public class PhotoController {
     @ApiOperation("为老人增加照片|which说明：第2张照片参数值为photo1',第2张照片参数值为photo2，同理类推...")
     @PostMapping("/addPhoto")
     public ResponseData addPhoto(@ApiJsonObject(name = "addPhoto",value = {
-            @ApiJsonProperty( key = "eid", description = "老人id"),
-            @ApiJsonProperty( key = "photo", description = "照片的url地址"),
-            @ApiJsonProperty( key = "which", description = "第几张照片")
+            @ApiJsonProperty( key = "eid", example = "老人id"),
+            @ApiJsonProperty( key = "photo", example = "照片的url地址"),
+            @ApiJsonProperty( key = "which", example = "第几张照片")
     }) @RequestBody Map<String,String> parameter) {
         String eid = parameter.get("eid");
         String photo = parameter.get("photo");
