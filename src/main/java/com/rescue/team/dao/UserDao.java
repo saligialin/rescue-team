@@ -16,4 +16,5 @@ public interface UserDao {
 
     boolean deleteUserByUid(String uid);
 
+    boolean notVolunteer(String uid);
 }

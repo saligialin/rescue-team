@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,5 +108,18 @@ public class TaskController {
         } else {
             return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
         }
+    }
+
+    @ApiOperation("根据短信接收到的任务码查询任务|传参任务码code")
+    @PostMapping("/getTaskByCode")
+    public ResponseData getTaskByCode(@ApiJsonObject(name = "getTaskByCode",value = @ApiJsonProperty(key = "code",example = "任务码")) @RequestBody Map<String,String> parameter) {
+        String code = parameter.get("code");
+        Task task = taskService.getTaskByCode(code);
+        if(task==null) return new ResponseData(ResponseState.TASK_NOT_EXIST.getValue(), ResponseState.TASK_YET_END.getMessage());
+        Date end = task.getEnd();
+        if(end!=null) return new ResponseData(ResponseState.TASK_YET_END.getValue(), ResponseState.TASK_YET_END.getMessage());
+        Map<String,Object> data = new HashMap<>();
+        data.put("task",task);
+        return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(),data);
     }
 }

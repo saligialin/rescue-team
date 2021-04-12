@@ -21,7 +21,8 @@ public enum ResponseState {
     TOKEN_IS_ERROR("token错误",114),
     TOKEN_IS_EXPIRED("token过期",115),
     NO_VOLUNTEER_HERE("这个城市没有可服务的志愿者",116),
-    ELDER_NO_PHOTO("该老人无照片",117)
+    ELDER_NO_PHOTO("该老人无照片",117),
+    TASK_YET_END("任务已结束",118)
     ;
 
     private String message;

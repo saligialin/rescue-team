@@ -85,4 +85,18 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+    @Override
+    public boolean notVolunteer(String uid) {
+        log.info("用户ID为"+uid+"的用户开始注销志愿者身份");
+        try {
+            boolean b = userDao.notVolunteer(uid);
+            log.info("用户ID为"+uid+"的用户注销志愿者身份结束");
+            return b;
+        } catch (Exception e) {
+            log.info("用户ID为"+uid+"的用户注销志愿者身份异常：");
+            log.info(e.toString());
+            return false;
+        }
+    }
 }

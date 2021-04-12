@@ -26,4 +26,10 @@
     <delete id="deleteUser" parameterType="java.lang.String">
         DELETE FROM rescue_user WHERE uid = #{uid}
     </delete>
+
+    <update id="notVolunteer" parameterType="java.lang.String">
+        UPDATE rescue_user
+        SELECT role = 0
+        WHERE uid = #{uid}
+    </update>
 </mapper>

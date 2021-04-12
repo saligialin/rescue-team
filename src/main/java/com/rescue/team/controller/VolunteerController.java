@@ -6,6 +6,7 @@ import com.rescue.team.bean.*;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.MemberService;
 import com.rescue.team.service.TaskService;
+import com.rescue.team.service.UserService;
 import com.rescue.team.service.VolunteerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,9 @@ public class VolunteerController {
 
     @Autowired
     private VolunteerService volunteerService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MemberService memberService;
@@ -154,6 +158,17 @@ public class VolunteerController {
             }
         }
 
+    }
+
+    @ApiOperation("注销志愿者操作")
+    @PostMapping("/deRegister")
+    public ResponseData logout(@ApiJsonObject(name = "logout",value = @ApiJsonProperty(key = "vid",example = "志愿者ID")) @RequestBody Map<String,String> parameter) {
+        String vid = parameter.get("vid");
+        boolean deleteVolunteer = volunteerService.deleteVolunteer(vid);
+        if(!deleteVolunteer) return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        boolean notVolunteer = userService.notVolunteer(vid);
+        if(!notVolunteer) return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
     }
 
     @ApiOperation("防BUG用，无视")
