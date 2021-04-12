@@ -25,7 +25,7 @@ public class FileController {
 
     @ApiOperation("前台上传图片|传参图片")
     @PostMapping("/upload")
-    public ResponseData upload(@RequestBody MultipartFile file, @ApiIgnore @ModelAttribute("user")User user) {
+    public ResponseData upload(@RequestParam("photo") MultipartFile file, @ApiIgnore @ModelAttribute("user")User user) {
         if (!file.isEmpty()) {
             String filename = file.getOriginalFilename();
             int index = 0;
@@ -57,7 +57,7 @@ public class FileController {
 
     @ApiOperation("后台上传图片|传参图片")
     @PostMapping("/uploadFile")
-    public ResponseData upload(@RequestBody MultipartFile file) {
+    public ResponseData upload(@RequestParam("photo") MultipartFile file) {
         if (!file.isEmpty()) {
             String filename = file.getOriginalFilename();
             int index = 0;
@@ -89,7 +89,7 @@ public class FileController {
 
     @ApiOperation("人脸识别照片上传|传参图片")
     @PostMapping("/uploadFace")
-    public ResponseData uploadFace(@RequestBody MultipartFile file) {
+    public ResponseData uploadFace(@RequestParam("photo") MultipartFile file) {
         if (!file.isEmpty()) {
             String filename = file.getOriginalFilename();
             int index = 0;

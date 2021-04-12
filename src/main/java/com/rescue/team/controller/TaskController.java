@@ -1,5 +1,7 @@
 package com.rescue.team.controller;
 
+import com.rescue.team.annotation.ApiJsonObject;
+import com.rescue.team.annotation.ApiJsonProperty;
 import com.rescue.team.bean.Photo;
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.Task;
@@ -76,7 +78,8 @@ public class TaskController {
 
     @ApiOperation("获取任务大厅默认展示的任务|传参志愿者vid")
     @PostMapping("/getDefault")
-    public ResponseData getGoingTasks(String vid) {
+    public ResponseData getGoingTasks(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "vid",example = "志愿者ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String vid = parameter.get("vid");
         Volunteer volunteer = volunteerService.getVolunteerByVid(vid);
         List<Task> goingTasks = taskService.getGoingTasksByDistrict(volunteer.getDistrict());
         if(goingTasks!=null) {
@@ -92,7 +95,8 @@ public class TaskController {
 
     @ApiOperation("获取任务大厅志愿者筛选的任务|传参最后所筛选县/区district")
     @PostMapping("/getSelect")
-    public ResponseData getSelectTask(String district) {
+    public ResponseData getSelectTask(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "district",example = "县/区/同级行政单位",type = "String")) @RequestBody Map<String,String> parameter) {
+        String district = parameter.get("district");
         List<Task> goingTasks = taskService.getGoingTasksByDistrict(district);
         if(goingTasks!=null) {
             Map<String,Object> data = new HashMap<>();

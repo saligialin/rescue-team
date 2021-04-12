@@ -32,7 +32,8 @@ public class ElderController {
 
     @ApiOperation("获取当前用户绑定的所有老人|传参当前用户的uid")
     @PostMapping("/getAll")
-    public ResponseData getAll(@RequestBody String uid) {
+    public ResponseData getAll(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "uid",example = "用户ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String uid = parameter.get("uid");
         List<Elder> elders = elderService.getElderByUid(uid);
         if(elders != null) {
             Map<String, Object> data = new HashMap<>();
@@ -61,7 +62,8 @@ public class ElderController {
 
     @ApiOperation("根据eid获取老人信息|传参老人的eid")
     @PostMapping("/get")
-    public ResponseData getElder(@RequestBody String eid) {
+    public ResponseData getElder(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "eid",example = "老人ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String eid = parameter.get("eid");
         Elder elder = elderService.getElderByEid(eid);
         if(elder!=null) {
             Map<String, Object> data = new HashMap<>();
@@ -87,7 +89,8 @@ public class ElderController {
 
     @ApiOperation("删除绑定的老人|传参老人的eid")
     @PostMapping("/delete")
-    public ResponseData deleteElder(@RequestBody String eid) {
+    public ResponseData deleteElder(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "eid",example = "老人ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String eid = parameter.get("eid");
         boolean b1 = elderService.deleteElder(eid);
         if(b1) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());

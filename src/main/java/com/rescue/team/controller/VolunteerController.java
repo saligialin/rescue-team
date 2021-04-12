@@ -33,7 +33,8 @@ public class VolunteerController {
 
     @ApiOperation("获取当前用户对应的志愿者信息|传参当前用户的uid")
     @PostMapping("/get")
-    public ResponseData getVolunteer(@RequestBody String uid) {
+    public ResponseData getVolunteer(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "uid",example = "用户ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String uid = parameter.get("uid");
         Volunteer volunteer = volunteerService.getVolunteerByVid(uid);
         if(volunteer!=null) {
             Map<String, Object> data = new HashMap<>();
@@ -69,7 +70,8 @@ public class VolunteerController {
 
     @ApiOperation("注销志愿者服务|传参志愿者vid")
     @PostMapping("/delete")
-    public ResponseData deleteVolunteer(@RequestBody String vid) {
+    public ResponseData deleteVolunteer(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "vid",example = "志愿者ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String vid = parameter.get("vid");
         boolean b = volunteerService.deleteVolunteer(vid);
         if (b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
@@ -81,7 +83,8 @@ public class VolunteerController {
 
     @ApiOperation("志愿者状态更改为繁忙|传参志愿者vid")
     @PostMapping("/beBusy")
-    public ResponseData beBusy(@RequestBody String vid) {
+    public ResponseData beBusy(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "vid",example = "志愿者ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String vid = parameter.get("vid");
         boolean b = volunteerService.beBusy(vid);
         if (b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
@@ -92,7 +95,8 @@ public class VolunteerController {
 
     @ApiOperation("志愿者设备故障|传参志愿者vid")
     @PostMapping("/beFault")
-    public ResponseData beFault(@RequestBody String vid) {
+    public ResponseData beFault(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "vid",example = "志愿者ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String vid = parameter.get("vid");
         boolean b = volunteerService.beFault(vid);
         if (b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
@@ -103,7 +107,8 @@ public class VolunteerController {
 
     @ApiOperation("志愿者状态更改为空闲|传参志愿者vid")
     @PostMapping("byIdle")
-    public ResponseData beIdle(@RequestBody String vid) {
+    public ResponseData beIdle(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "vid",example = "志愿者ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String vid = parameter.get("vid");
         boolean b = volunteerService.beIdle(vid);
         if (b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
@@ -114,7 +119,8 @@ public class VolunteerController {
 
     @ApiOperation("获取历史任务|传参志愿者vid")
     @PostMapping("/getMyTasks")
-    public ResponseData getPastTasks(@RequestBody String vid) {
+    public ResponseData getPastTasks(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "vid",example = "志愿者ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String vid = parameter.get("vid");
         List<Member> members = memberService.getMemberByVid(vid);
         if(members != null) {
             Map<String, Object> data = new HashMap<>();

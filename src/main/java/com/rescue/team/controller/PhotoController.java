@@ -63,7 +63,8 @@ public class PhotoController {
 
     @ApiOperation("通过老人ID获得照片组|传参老人的eid")
     @PostMapping("/get")
-    public ResponseData getPhoto(@RequestBody String eid) {
+    public ResponseData getPhoto(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "eid",example = "老人ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String eid = parameter.get("eid");
         Photo photo = photoService.getPhotoByEid(eid);
         if(photo!=null) {
             Map<String, Object> data = new HashMap<>();
@@ -89,7 +90,8 @@ public class PhotoController {
 
     @ApiOperation("删除老人照片组信息（摆设）")
     @PostMapping("/delete")
-    public ResponseData deletePhoto(@RequestBody String pid) {
+    public ResponseData deletePhoto(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "pid",example = "照片组ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String pid = parameter.get("pid");
         boolean b = photoService.deletePhoto(pid);
         if(b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());

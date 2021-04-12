@@ -43,7 +43,8 @@ public class UserController {
 
     @ApiOperation(value = "获取短信验证码|传参手机号")
     @PostMapping("/getMsgCode")
-    public ResponseData getCode( @RequestBody String tel) {
+    public ResponseData getCode(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "tel",example = "注册用手机号",type = "String")) @RequestBody Map<String,String> parameter) {
+        String tel = parameter.get("tel");
         try {
             boolean b = msgSendService.sendVerifiedCode(tel);
             if(b) {
@@ -134,7 +135,8 @@ public class UserController {
 
     @ApiOperation("更新token|传参为用户token")
     @PostMapping("/refreshToken")
-    public ResponseData refreshToken(@RequestBody String token) throws Exception {
+    public ResponseData refreshToken(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "token",example = "用户token",type = "String")) @RequestBody Map<String,String> parameter) throws Exception {
+        String token = parameter.get("token");
         User user = jwtUtil.getUser(token);
         if(user==null) return new ResponseData(ResponseState.TOKEN_IS_ERROR.getValue(), ResponseState.TOKEN_IS_ERROR.getMessage());
         String redisToken = redisTemplate.opsForValue().get("user-" + user.getUid());
@@ -188,12 +190,13 @@ public class UserController {
 
     /**
      *
-     * @param uid
+     * @param
      * @return 成功返回状态码和状态信息。失败返回状态码和状态信息
      */
     @ApiOperation("删除用户信息|传参用户的uid")
     @PostMapping("/deleteUser")
-    public ResponseData deleteUser(@RequestBody String uid) {
+    public ResponseData deleteUser(@ApiJsonObject(name = "getAll",value = @ApiJsonProperty(key = "uid",example = "用户ID",type = "String")) @RequestBody Map<String,String> parameter) {
+        String uid = parameter.get("uid");
         boolean b = userService.deleteUserByUid(uid);
         if(b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
