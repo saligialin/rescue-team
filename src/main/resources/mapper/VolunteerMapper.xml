@@ -19,7 +19,53 @@
 
     <update id="changeVolunteer" parameterType="com.rescue.team.bean.Volunteer">
         UPDATE rescue_volunteer
-        SET tel = #{tel},name = #{name},status = #{status},gender = #{gender},profession = #{profession},transportation = #{transportation},front_card = #{front_card},back_ground = #{back_ground},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
+        <set>
+            <if test=" tel != null">
+                tel = #{tel},
+            </if>
+            <if test=" name != null">
+                name = #{name},
+            </if>
+            <if test=" status != null">
+                status = #{status},
+            </if>
+            <if test=" gender != null">
+                gender = #{gender},
+            </if>
+            <if test=" profession != null">
+                profession = #{profession},
+            </if>
+            <if test=" transportation != null">
+                transportation = #{transportation},
+            </if>
+            <if test=" front_card != null">
+                front_card = #{front_card},
+            </if>
+            <if test=" back_ground != null">
+                back_ground = #{back_ground},
+            </if>
+            <if test=" longitude != null" >
+                longitude = #{longitude},
+            </if>
+            <if test=" latitude != null" >
+                latitude = #{latitude},
+            </if>
+            <if test=" province != null" >
+                province = #{province},
+            </if>
+            <if test=" city != null" >
+                city = #{city},
+            </if>
+            <if test=" district != null" >
+                district = #{district},
+            </if>
+            <if test=" address != null" >
+                address = #{address},
+            </if>
+            <if test=" place != null" >
+                place = #{place}
+            </if>
+        </set>
         WHERE vid = #{vid}
     </update>
 

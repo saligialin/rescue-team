@@ -19,7 +19,23 @@
 
     <update id="changeUser" parameterType="com.rescue.team.bean.User">
         UPDATE rescue_user
-        SET tel = #{tel},role = #{role},picture = #{picture},name = #{name},gender = #{gender},birthday = #{birthday}
+        <set>
+            <if test=" tel != null">
+                tel = #{tel},
+            </if>
+            <if test=" picture != null">
+                picture = #{picture},
+            </if>
+            <if test=" name != null">
+                name = #{name},
+            </if>
+            <if test=" gender != null">
+                gender = #{gender},
+            </if>
+            <if test=" birthday != null">
+                birthday = #{birthday}
+            </if>
+        </set>
         WHERE uid = #{uid}
     </update>
 

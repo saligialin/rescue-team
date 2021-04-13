@@ -15,7 +15,50 @@
 
     <update id="changeElder" parameterType="com.rescue.team.bean.Elder">
         UPDATE rescue_elder
-        SET name = #{name},gender = #{gender},birthday = #{birthday},height = #{height},level = #{level},front_card = #{front_card},back_card = #{back_card},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
+        <set>
+            <if test=" name != null">
+                name = #{name},
+            </if>
+            <if test=" gender != null" >
+                gender = #{gender},
+            </if>
+            <if test=" birthday != null" >
+                birthday = #{birthday},
+            </if>
+            <if test=" height != null" >
+                height = #{height},
+            </if>
+            <if test=" level != null" >
+                level = #{level},
+            </if>
+            <if test=" front_card != null" >
+                front_card = #{front_card},
+            </if>
+            <if test=" back_card != null" >
+                back_card = #{back_card},
+            </if>
+            <if test=" longitude != null" >
+                longitude = #{longitude},
+            </if>
+            <if test=" latitude != null" >
+                latitude = #{latitude},
+            </if>
+            <if test=" province != null" >
+                province = #{province},
+            </if>
+            <if test=" city != null" >
+                city = #{city},
+            </if>
+            <if test=" district != null" >
+                district = #{district},
+            </if>
+            <if test=" address != null" >
+                address = #{address},
+            </if>
+            <if test=" place != null" >
+                place = #{place}
+            </if>
+        </set>
         WHERE eid = #{eid}
     </update>
 

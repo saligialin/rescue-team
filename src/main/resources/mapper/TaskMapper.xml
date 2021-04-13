@@ -19,7 +19,44 @@
 
     <update id="changeTask" parameterType="com.rescue.team.bean.Task" >
         UPDATE rescue_task
-        SET code = #{code},start = #{start},end = #{end},eid = #{eid},description = #{description},longitude = #{longitude},latitude = #{latitude},province = #{province},city = #{city},district = #{district},address = #{address},place = #{place}
+        <set>
+            <if test=" code != null">
+                code = #{code},
+            </if>
+            <if test=" start != null">
+                start = #{start},
+            </if>
+            <if test=" end != null">
+                end = #{end},
+            </if>
+            <if test=" eid != null">
+                eid = #{eid},
+            </if>
+            <if test=" description != null">
+                description = #{description},
+            </if>
+            <if test=" longitude != null" >
+                longitude = #{longitude},
+            </if>
+            <if test=" latitude != null" >
+                latitude = #{latitude},
+            </if>
+            <if test=" province != null" >
+                province = #{province},
+            </if>
+            <if test=" city != null" >
+                city = #{city},
+            </if>
+            <if test=" district != null" >
+                district = #{district},
+            </if>
+            <if test=" address != null" >
+                address = #{address},
+            </if>
+            <if test=" place != null" >
+                place = #{place}
+            </if>
+        </set>
         WHERE tid = #{tid}
     </update>
 
