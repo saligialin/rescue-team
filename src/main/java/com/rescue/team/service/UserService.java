@@ -14,6 +14,8 @@ public interface UserService {
 
     boolean changeUser(User user);
 
+    boolean changePassword(String password, String uid);
+
     boolean deleteUserByUid(String uid);
 
     boolean notVolunteer(String uid);

@@ -19,7 +19,13 @@
 
     <update id="changeUser" parameterType="com.rescue.team.bean.User">
         UPDATE rescue_user
-        SELECT tel = #{tel},password = #{password},role = #{role},picture = #{picture},name = #{name},gender = #{gender},birthday = #{birthday}
+        SET tel = #{tel},role = #{role},picture = #{picture},name = #{name},gender = #{gender},birthday = #{birthday}
+        WHERE uid = #{uid}
+    </update>
+
+    <update id="changePassword" parameterType="java.lang.String">
+        UPDATE rescue_user
+        SET password = #{password}
         WHERE uid = #{uid}
     </update>
 

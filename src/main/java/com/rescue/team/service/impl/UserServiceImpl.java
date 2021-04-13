@@ -73,6 +73,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean changePassword(String password, String uid) {
+        log.info("用户ID为"+uid+"的用户开始进行更改密码操作");
+        try {
+            boolean b = userDao.changePassword(password, uid);
+            log.info("用户ID为"+uid+"的用户进行更改密码操作结束");
+            return b;
+        } catch (Exception e) {
+            log.info("用户ID为"+uid+"的用户进行更改密码操作异常：");
+            log.info(e.toString());
+            return false;
+        }
+    }
+
+    @Override
     public boolean deleteUserByUid(String uid) {
         log.info("用户ID为"+uid+"的用户开始进行删除操作");
         try {

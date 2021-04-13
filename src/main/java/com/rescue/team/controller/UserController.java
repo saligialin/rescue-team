@@ -173,7 +173,7 @@ public class UserController {
      * @param postUser
      * @return 成功返回状态码、状态信息和更改后的User信息。失败返回状态码和状态信息
      */
-    @ApiOperation("修改用户信息|参数全传，修改的传修改后的，未修改的也传")
+    @ApiOperation("修改用户信息|参数全传，修改的传修改后的，未修改的也传，密码不传")
     @PostMapping("/changeUser")
     public ResponseData changeUser(@RequestBody User postUser) {
         boolean b = userService.changeUser(postUser);
@@ -185,6 +185,29 @@ public class UserController {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        }
+    }
+
+    @ApiOperation("更改用户密码|传参用户id、手机号、新密码、短信验证码")
+    @PostMapping("/changePassword")
+    public ResponseData changePassword(@ApiJsonObject(name = "changePassword",value = {
+            @ApiJsonProperty( key = "uid", example = "用户ID"),
+            @ApiJsonProperty( key = "tel", example = "手机号"),
+            @ApiJsonProperty( key = "newPassword", example = "新密码"),
+            @ApiJsonProperty( key = "code", example = "验证码")
+    }) @RequestBody Map<String, String> parameter)   {
+        String uid = parameter.get("uid");
+        String tel = parameter.get("tel");
+        String newPassword = parameter.get("newPassword");
+        String code = parameter.get("code");
+        boolean b = msgSendService.checkCode(tel, code);
+        if(b) {
+            String password = passwordEncoder.encode(newPassword);
+            boolean changePassword = userService.changePassword(password, uid);
+            if(changePassword) return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+            else return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        } else {
+            return new ResponseData(ResponseState.VERIFIED_CODE_ERROR.getValue(), ResponseState.VERIFIED_CODE_ERROR.getMessage());
         }
     }
 
