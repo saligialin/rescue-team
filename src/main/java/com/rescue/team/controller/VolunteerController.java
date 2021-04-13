@@ -61,7 +61,7 @@ public class VolunteerController {
         }
     }
 
-    @ApiOperation("更该志愿者信息|参数全传，修改的传修改后的，未修改的也传")
+    @ApiOperation("更该志愿者信息|传参修改的，必传id")
     @PostMapping("/change")
     public ResponseData changeVolunteer(@RequestBody Volunteer volunteer) {
         boolean b = volunteerService.changeVolunteer(volunteer);

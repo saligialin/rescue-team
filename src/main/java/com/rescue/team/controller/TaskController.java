@@ -66,7 +66,7 @@ public class TaskController {
 
     }
 
-    @ApiOperation("结束任务|传参全参")
+    @ApiOperation("结束任务|传参修改的，必传id")
     @PostMapping("/endTask")
     public ResponseData endTask(@RequestBody Task task) {
         boolean b = taskService.changeTask(task);

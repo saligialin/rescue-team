@@ -29,7 +29,7 @@ public class PhotoController {
     @Autowired
     private FaceService faceService;
 
-    @ApiOperation("增加照片组（应该用不到，用addPhoto请求逐张增加图片）")
+    @ApiOperation("增加照片组（应该用不到，用addPhoto请求逐张增加图片）|传参修改的，必传id")
     @PostMapping("/add")
     public ResponseData addPhotos(@RequestBody Photo photo) {
         boolean b = photoService.insertPhoto(photo);

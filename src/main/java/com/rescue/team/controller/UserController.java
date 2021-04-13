@@ -173,7 +173,7 @@ public class UserController {
      * @param postUser
      * @return 成功返回状态码、状态信息和更改后的User信息。失败返回状态码和状态信息
      */
-    @ApiOperation("修改用户信息|参数全传，修改的传修改后的，未修改的也传，密码不传")
+    @ApiOperation("修改用户信息|传参修改的，必传id。密码、角色属性role不传")
     @PostMapping("/changeUser")
     public ResponseData changeUser(@RequestBody User postUser) {
         boolean b = userService.changeUser(postUser);
