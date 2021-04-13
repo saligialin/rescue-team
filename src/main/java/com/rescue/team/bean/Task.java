@@ -1,5 +1,6 @@
 package com.rescue.team.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -20,9 +21,11 @@ public class Task {
     @ApiModelProperty(name = "code", value = "任务编号")
     private String code;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(name = "start", value = "任务开始时间")
     private Date start;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(name = "end", value = "任务结束时间")
     private Date end;
 

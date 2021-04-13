@@ -1,5 +1,6 @@
 package com.rescue.team.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class Elder {
     @ApiModelProperty(name = "gender", value = "老年人性别")
     private Integer gender;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(name = "birthday", value = "老年人生日")
     private Date birthday;
 

@@ -1,6 +1,7 @@
 package com.rescue.team.bean;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,7 @@ public class User {
     @ApiModelProperty(name = "gender", value = "用户性别")
     private Integer gender;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(name = "birthday", value = "用户生日")
     private Date birthday;
 
