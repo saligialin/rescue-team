@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,13 +43,15 @@ public class ElderController {
         List<Elder> elders = elderService.getElderByUid(uid);
         if(elders != null) {
             Map<String, Object> data = new HashMap<>();
+            List<Map<String,Object>> list = new ArrayList<>();
             for(int i=0; i<elders.size(); i++) {
                 Map<String,Object> e = new HashMap<>();
                 Photo photo = photoService.getPhotoByEid(elders.get(i).getEid());
                 e.put("elder",elders.get(i));
                 e.put("photo",photo);
-                data.put("elder"+i+1,e);
+                list.add(e);
             }
+            data.put("elders",list);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
@@ -62,6 +65,7 @@ public class ElderController {
         if(eid!=null) {
             Map<String,Object> data = new HashMap<>();
             data.put("elder",elderService.getElderByEid(eid));
+            data.put("photo",photoService.getPhotoByEid(eid));
             boolean b = faceService.addEntity(eid);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
