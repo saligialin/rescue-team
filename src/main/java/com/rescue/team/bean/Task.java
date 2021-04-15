@@ -21,11 +21,11 @@ public class Task {
     @ApiModelProperty(name = "code", value = "任务编号")
     private String code;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(name = "start", value = "任务开始时间")
     private Date start;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(name = "end", value = "任务结束时间")
     private Date end;
 

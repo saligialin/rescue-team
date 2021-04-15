@@ -75,7 +75,7 @@ public class PhotoController {
         }
     }
 
-    @ApiOperation("更改老人照片组信息（摆设）")
+    @ApiOperation("更改老人照片组信息|必传pid，其余传修改的")
     @PostMapping("/change")
     public ResponseData changePhoto(@RequestBody Photo photo) {
         boolean b = photoService.changePhoto(photo);
