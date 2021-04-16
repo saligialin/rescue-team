@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
-@ServerEndpoint(value = "/websocket/message")
+@ServerEndpoint(value = "/websocket/message/{tid}")
 public class MessageWebSocketService {
 
     private static ConcurrentHashMap<String, List<MessageWebSocketService>> webSocketClientMap= new ConcurrentHashMap<>();
@@ -60,8 +60,10 @@ public class MessageWebSocketService {
         message.setMessage(json.getString("message"));
 
         List<MessageWebSocketService> list = webSocketClientMap.get("message" + message.getTid());
-        for (MessageWebSocketService service : list) {
-            service.sendMessage(message);
+        if (list!=null) {
+            for (MessageWebSocketService service : list) {
+                service.sendMessage(message);
+            }
         }
     }
 

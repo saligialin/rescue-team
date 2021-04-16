@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
-@ServerEndpoint(value = "/websocket/location")
+@ServerEndpoint(value = "/websocket/location/{tid}")
 public class LocationWebSocketService {
 
     private static ConcurrentHashMap<String, List<LocationWebSocketService>> webSocketClientMap= new ConcurrentHashMap<>();
@@ -60,8 +60,10 @@ public class LocationWebSocketService {
         location.setLatitude(json.getDouble("latitude"));
 
         List<LocationWebSocketService> list = webSocketClientMap.get("location" + location.getTid());
-        for (LocationWebSocketService service : list) {
-            service.sendMessage(location);
+        if(list!=null) {
+            for (LocationWebSocketService service : list) {
+                service.sendMessage(location);
+            }
         }
     }
 
