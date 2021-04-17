@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,10 +129,12 @@ public class VolunteerController {
         List<Member> members = memberService.getMemberByVid(vid);
         if(members != null) {
             Map<String, Object> data = new HashMap<>();
-            for(int i=0; i<members.size(); i++) {
-                Task task = taskService.getTaskByTid(members.get(i).getTid());
-                data.put("task"+i,task);
+            List<Task> list = new ArrayList<>();
+            for (Member member : members) {
+                Task task = taskService.getTaskByTid(member.getTid());
+                list.add(task);
             }
+            data.put("task",list);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
