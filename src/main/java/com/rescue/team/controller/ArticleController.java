@@ -29,9 +29,7 @@ public class ArticleController {
         List<Article> articles = articleService.getArticles();
         if(articles!=null) {
             Map<String,Object> data = new HashMap<>();
-            for(int i=0; i<articles.size(); i++) {
-                data.put("article"+i,articles.get(i));
-            }
+            data.put("article",articles);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
