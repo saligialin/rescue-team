@@ -1,5 +1,6 @@
 package com.rescue.team.bean.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Message {
     @ApiModelProperty(name = "name", value = "姓名")
     private String name;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(name = "time", value = "消息发送时间")
     private Date time;
 
