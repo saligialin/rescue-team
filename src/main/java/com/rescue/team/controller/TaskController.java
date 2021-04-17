@@ -85,9 +85,7 @@ public class TaskController {
         List<Task> goingTasks = taskService.getGoingTasksByDistrict(volunteer.getDistrict());
         if(goingTasks!=null) {
             Map<String,Object> data = new HashMap<>();
-            for(int i=0; i<goingTasks.size(); i++) {
-                data.put("task"+i,goingTasks.get(i));
-            }
+            data.put("tasak",goingTasks);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
@@ -101,9 +99,7 @@ public class TaskController {
         List<Task> goingTasks = taskService.getGoingTasksByDistrict(district);
         if(goingTasks!=null) {
             Map<String,Object> data = new HashMap<>();
-            for(int i=0; i<goingTasks.size(); i++) {
-                data.put("task"+i,goingTasks.get(i));
-            }
+            data.put("tasak",goingTasks);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());

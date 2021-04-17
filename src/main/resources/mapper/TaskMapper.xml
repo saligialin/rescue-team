@@ -65,7 +65,7 @@
     </delete>
 
     <select id="getGoingTasksByDistrict" resultType="com.rescue.team.bean.Task" parameterType="java.lang.String">
-        SELECT * FROM rescue_task WHERE end = null AND district = #{district}
+        SELECT * FROM rescue_task WHERE district = #{district} AND end is null
     </select>
 
 </mapper>
