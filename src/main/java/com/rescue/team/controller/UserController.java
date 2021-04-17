@@ -148,6 +148,20 @@ public class UserController {
         return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
     }
 
+    @ApiOperation("通过uid获取用户信息|传uid")
+    @PostMapping("/getUserByUid")
+    public ResponseData getUserByUid(@ApiJsonObject(name = "getUserByUid",value = @ApiJsonProperty(key = "uid",example = "用户ID")) @RequestBody Map<String,String> parameter) {
+        String uid = parameter.get("uid");
+        User user = userService.getUserByUid(uid);
+        if(user!=null) {
+            Map<String,Object> data = new HashMap<>();
+            data.put("user",user);
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
+        } else {
+            return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
+        }
+    }
+
     /**
      *
      * @param postUser

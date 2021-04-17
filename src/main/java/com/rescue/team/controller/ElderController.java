@@ -63,11 +63,11 @@ public class ElderController {
     public ResponseData addElder(@RequestBody Elder elder) {
         String eid = elderService.insertElder(elder);
         if(eid!=null) {
-            Map<String,Object> data = new HashMap<>();
-            data.put("elder",elderService.getElderByEid(eid));
-            data.put("photo",photoService.getPhotoByEid(eid));
+            Photo photo = new Photo();
+            photo.setEid(eid);
+            photoService.insertPhoto(photo);
             boolean b = faceService.addEntity(eid);
-            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
         }

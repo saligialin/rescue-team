@@ -3,6 +3,7 @@ package com.rescue.team.service.impl;
 import com.rescue.team.bean.Photo;
 import com.rescue.team.dao.PhotoDao;
 import com.rescue.team.service.PhotoService;
+import com.rescue.team.utils.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public boolean insertPhoto(Photo photo) {
         log.info("开始新增老人照片组");
+        photo.setPid(IdUtil.generateId());
         try {
             boolean b = photoDao.insertPhoto(photo);
             log.info("新增老人照片组结束");
