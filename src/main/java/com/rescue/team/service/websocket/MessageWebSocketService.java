@@ -21,17 +21,32 @@ public class MessageWebSocketService {
 
     private static ConcurrentHashMap<String, List<MessageWebSocketService>> webSocketClientMap= new ConcurrentHashMap<>();
 
+    private static ConcurrentHashMap<String, List<Message>> historyMessageMap = new ConcurrentHashMap<>();
+
     private Session session;
 
 
     @OnOpen
     public void onOpen(Session session, @PathParam("tid") String tid) {
         log.info("新的连接建立");
+
+        //建立连接
         this.session = session;
         List<MessageWebSocketService> list = webSocketClientMap.get("message" + tid);
         if(list==null) list = new ArrayList<>();
         list.add(this);
         webSocketClientMap.put("message"+tid,list);
+
+        //为新连接的用户推送历史记录
+        List<Message> messageList = historyMessageMap.get("message" + tid);
+        if(messageList==null) {
+            List<Message> mList = new ArrayList<>();
+            historyMessageMap.put("message" + tid, mList);
+        } else {
+            for (MessageWebSocketService service : list) {
+                service.sendAllMessage(messageList);
+            }
+        }
     }
 
     @OnClose
@@ -51,6 +66,8 @@ public class MessageWebSocketService {
     @OnMessage
     public void onMessage(String parameter) {
         log.info("接收到信息");
+
+        //解析消息字符串
         JSONObject json = JSON.parseObject(parameter);
         Message message = new Message();
         message.setVid(json.getString("vid"));
@@ -59,6 +76,12 @@ public class MessageWebSocketService {
         message.setTime(json.getDate("time"));
         message.setMessage(json.getString("message"));
 
+        //将消息存储到历史消息list中
+        List<Message> messageList = historyMessageMap.get("message" + message.getTid());
+        messageList.add(message);
+        historyMessageMap.put("message" + message.getTid(), messageList);
+
+        //为所有用户推送新消息
         List<MessageWebSocketService> list = webSocketClientMap.get("message" + message.getTid());
         if (list!=null) {
             for (MessageWebSocketService service : list) {
@@ -70,6 +93,14 @@ public class MessageWebSocketService {
     public void sendMessage(Message message) {
         try {
             this.session.getBasicRemote().sendText(JSON.toJSONString(message));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendAllMessage(List<Message> list) {
+        try {
+            this.session.getBasicRemote().sendText(JSON.toJSONString(list));
         } catch (IOException e) {
             e.printStackTrace();
         }
