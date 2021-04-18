@@ -69,6 +69,7 @@ public class TaskController {
     @ApiOperation("结束任务|传参修改的，必传id")
     @PostMapping("/endTask")
     public ResponseData endTask(@RequestBody Task task) {
+        task.setEnd(new Date());
         boolean b = taskService.changeTask(task);
         if(b) {
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
