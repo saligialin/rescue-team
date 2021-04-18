@@ -56,7 +56,9 @@ public class VolunteerController {
         volunteer.setVid(user.getUid());
         boolean b = volunteerService.insertVolunteer(volunteer);
         if (b) {
-            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+            Map<String, Object> data = new HashMap<>();
+            data.put("volunteer",volunteerService.getVolunteerByVid(user.getUid()));
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
         }
