@@ -34,7 +34,7 @@ public class LocationWebSocketService {
         webSocketClientMap.put("location"+tid,list);
 
         Map<String, Location> locations = allLocations.get("location" + tid);
-        if (locations.isEmpty()) {
+        if (locations==null) {
             Map<String, Location> locationMap = new HashMap<>();
             allLocations.put("location" + tid,locationMap);
         } else {
