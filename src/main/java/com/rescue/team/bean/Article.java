@@ -18,6 +18,9 @@ public class Article {
     @ApiModelProperty(name = "id", value = "文章ID")
     private String id;
 
+    @ApiModelProperty(name = "cover", value = "文章封面")
+    private String cover;
+
     @ApiModelProperty(name = "title", value = "文章标题")
     private String title;
 
