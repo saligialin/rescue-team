@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService {
         log.info("手机号为"+user.getTel()+"的用户开始进行插入操作");
         try {
             user.setUid(IdUtil.generateId());
+            user.setRole(0);
             boolean b = userDao.insertUser(user);
             log.info("手机号为"+user.getTel()+"的用户进行插入操作结束");
             return b;
