@@ -72,6 +72,7 @@ public class MessageWebSocketService {
         Message message = new Message();
         message.setVid(json.getString("vid"));
         message.setTid(json.getString("tid"));
+        message.setName(json.getString("name"));
         message.setPicture(json.getString("picture"));
         message.setTime(json.getDate("time"));
         message.setMessage(json.getString("message"));
