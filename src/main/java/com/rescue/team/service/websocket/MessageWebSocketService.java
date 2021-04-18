@@ -82,11 +82,11 @@ public class MessageWebSocketService {
         messageList.add(message);
         historyMessageMap.put("message" + message.getTid(), messageList);
 
-        //为所有用户推送新消息
+        //为所有用户推送所有信息
         List<MessageWebSocketService> list = webSocketClientMap.get("message" + message.getTid());
         if (list!=null) {
             for (MessageWebSocketService service : list) {
-                service.sendMessage(message);
+                service.sendAllMessage(messageList);
             }
         }
     }

@@ -10,8 +10,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -19,7 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(value = "/websocket/location/{tid}")
 public class LocationWebSocketService {
 
-    private static ConcurrentHashMap<String, List<LocationWebSocketService>> webSocketClientMap= new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<String, List<LocationWebSocketService>> webSocketClientMap = new ConcurrentHashMap<>();
+
+    private static ConcurrentHashMap<String, Map<String,Location>> allLocations = new ConcurrentHashMap<>();
 
     private Session session;
 
@@ -31,6 +32,21 @@ public class LocationWebSocketService {
         if(list==null) list = new ArrayList<>();
         list.add(this);
         webSocketClientMap.put("location"+tid,list);
+
+        Map<String, Location> locations = allLocations.get("location" + tid);
+        if (locations.isEmpty()) {
+            Map<String, Location> locationMap = new HashMap<>();
+            allLocations.put("location" + tid,locationMap);
+        } else {
+            List<Location> locationList = new ArrayList<>();
+            Set<String> keySet = locations.keySet();
+            for (String s : keySet) {
+                locationList.add(locations.get(s));
+            }
+            for (LocationWebSocketService service : list) {
+                service.sendAllMessage(locationList);
+            }
+        }
     }
 
     @OnClose
@@ -59,10 +75,19 @@ public class LocationWebSocketService {
         location.setLongitude(json.getDouble("longitude"));
         location.setLatitude(json.getDouble("latitude"));
 
+        Map<String, Location> locationMap = allLocations.get("location" + location.getTid());
+        locationMap.put(location.getVid(),location);
+        allLocations.put("location" + location.getTid(),locationMap);
+
         List<LocationWebSocketService> list = webSocketClientMap.get("location" + location.getTid());
         if(list!=null) {
+            List<Location> locationList = new ArrayList<>();
+            Set<String> keySet = locationMap.keySet();
+            for (String s : keySet) {
+                locationList.add(locationMap.get(s));
+            }
             for (LocationWebSocketService service : list) {
-                service.sendMessage(location);
+                service.sendAllMessage(locationList);
             }
         }
     }
@@ -70,6 +95,14 @@ public class LocationWebSocketService {
     public void sendMessage(Location location) {
         try {
             this.session.getBasicRemote().sendText(JSON.toJSONString(location));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendAllMessage(List<Location> list) {
+        try {
+            this.session.getBasicRemote().sendText(JSON.toJSONString(list));
         } catch (IOException e) {
             e.printStackTrace();
         }
