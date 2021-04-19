@@ -21,7 +21,7 @@ public class TaskServiceImpl implements TaskService {
     public boolean insertTask(Task task) {
         log.info("正在插入新救援任务");
         try {
-            task.setEid(IdUtil.generateId());
+            task.setTid(IdUtil.generateId());
             boolean b = taskDao.insertTask(task);
             log.info("插入新救援任务结束");
             return b;

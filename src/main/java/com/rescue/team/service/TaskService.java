@@ -20,7 +20,6 @@ public interface TaskService {
 
     List<Task> getGoingTasksByDistrict(String district);
 
-
     List<Task> getTaskByByDistrict(String district);
 
 }

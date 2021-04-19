@@ -21,8 +21,8 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public boolean insertPhoto(Photo photo) {
         log.info("开始新增老人照片组");
-        photo.setPid(IdUtil.generateId());
         try {
+            photo.setPid(IdUtil.generateId());
             boolean b = photoDao.insertPhoto(photo);
             log.info("新增老人照片组结束");
             return b;
