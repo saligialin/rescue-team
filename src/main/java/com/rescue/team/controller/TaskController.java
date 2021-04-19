@@ -7,10 +7,7 @@ import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.Task;
 import com.rescue.team.bean.Volunteer;
 import com.rescue.team.bean.state.ResponseState;
-import com.rescue.team.service.MsgSendService;
-import com.rescue.team.service.PhotoService;
-import com.rescue.team.service.TaskService;
-import com.rescue.team.service.VolunteerService;
+import com.rescue.team.service.*;
 import com.rescue.team.utils.VerificationCodeUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,11 +39,15 @@ public class TaskController {
     @Autowired
     private PhotoService photoService;
 
+    @Autowired
+    private FaceService faceService;
+
     @ApiOperation("新增任务|传参除结束时间end、tid、code之外全部")
     @PostMapping("/addTask")
     public ResponseData addTask(@RequestBody Task task) {
         Photo photo = photoService.getPhotoByEid(task.getEid());
-        if(photo.getPhoto1()==null) return new ResponseData(ResponseState.ELDER_NO_PHOTO.getValue(), ResponseState.ELDER_NO_PHOTO.getMessage());
+        List<String> photoList = photoService.getPhotoList(photo);
+        if(photoList.isEmpty()) return new ResponseData(ResponseState.ELDER_NO_PHOTO.getValue(), ResponseState.ELDER_NO_PHOTO.getMessage());
         String code = VerificationCodeUtil.getCode();
         task.setCode(code);
         boolean b = taskService.insertTask(task);
@@ -55,8 +56,21 @@ public class TaskController {
             if(tels==null) return new ResponseData(ResponseState.NO_VOLUNTEER_HERE.getValue(), ResponseState.NO_VOLUNTEER_HERE.getMessage());
             try {
                 boolean sendTaskCode = msgSendService.sendTaskCode(tels, code);
-                if(sendTaskCode) return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
-                else return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+                if(sendTaskCode) {
+                    boolean addEntity = faceService.addEntity(task.getEid());
+                    if (!addEntity) {
+                        Task tmp = taskService.getTaskByCode(code);
+                        boolean deleteTask = taskService.deleteTask(tmp.getTid());
+                        return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+                    } else {
+                        for (String url : photoList) {
+                            faceService.addFace(task.getEid(),url);
+                        }
+                        return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+                    }
+                } else {
+                    return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+                }
             } catch (Exception e) {
                 return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
             }
@@ -72,6 +86,7 @@ public class TaskController {
         task.setEnd(new Date());
         boolean b = taskService.changeTask(task);
         if(b) {
+            boolean deleteEntity = faceService.deleteEntity(task.getEid());
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());

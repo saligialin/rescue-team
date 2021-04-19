@@ -7,7 +7,6 @@ import com.rescue.team.bean.Photo;
 import com.rescue.team.bean.ResponseData;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.ElderService;
-import com.rescue.team.service.FaceService;
 import com.rescue.team.service.PhotoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,9 +28,6 @@ public class ElderController {
 
     @Autowired
     private ElderService elderService;
-
-    @Autowired
-    private FaceService faceService;
 
     @Autowired
     private PhotoService photoService;
@@ -66,7 +62,6 @@ public class ElderController {
             Photo photo = new Photo();
             photo.setEid(eid);
             photoService.insertPhoto(photo);
-            boolean b = faceService.addEntity(eid);
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
