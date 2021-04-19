@@ -155,12 +155,10 @@ public class VolunteerController {
             Map<String, Object> data = new HashMap<>();
             data.put("task",task);
 
-            if(member==null) {
+            if(member==null){
                 boolean b = memberService.insertMember(postMember);
-                return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
-            } else {
-                return new ResponseData(ResponseState.ALREADY_DID_IT.getValue(), ResponseState.ALREADY_DID_IT.getMessage(), data);
             }
+            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
         }
 
     }

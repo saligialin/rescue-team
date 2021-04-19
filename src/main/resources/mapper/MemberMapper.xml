@@ -17,4 +17,8 @@
         SELECT * FROM rescue_member WHERE vid = #{vid}
     </select>
 
+    <select id="getMemberByTidAndVid" resultType="com.rescue.team.bean.Member" parameterType="java.lang.String">
+        SELECT * FROM rescue_member WHERE tid = #{tid} AND vid = #{vid}
+    </select>
+
 </mapper>
