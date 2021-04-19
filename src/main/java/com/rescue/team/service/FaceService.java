@@ -11,4 +11,5 @@ public interface FaceService {
 
     boolean searchFace(String url);
 
+    boolean deleteEntity(String id);
 }

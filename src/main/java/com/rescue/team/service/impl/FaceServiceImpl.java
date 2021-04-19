@@ -3,10 +3,7 @@ package com.rescue.team.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.facebody20191230.Client;
-import com.aliyun.facebody20191230.models.AddFaceEntityRequest;
-import com.aliyun.facebody20191230.models.AddFaceRequest;
-import com.aliyun.facebody20191230.models.SearchFaceRequest;
-import com.aliyun.facebody20191230.models.SearchFaceResponse;
+import com.aliyun.facebody20191230.models.*;
 import com.aliyun.teaopenapi.models.Config;
 import com.rescue.team.service.FaceService;
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +89,21 @@ public class FaceServiceImpl implements FaceService {
             if(score>0.5) return true;
             else return false;
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteEntity(String id) {
+        try {
+            Client client = getClient();
+            DeleteFaceEntityRequest request = new DeleteFaceEntityRequest()
+                    .setDbName(DbName)
+                    .setEntityId(id);
+            client.deleteFaceEntity(request);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
