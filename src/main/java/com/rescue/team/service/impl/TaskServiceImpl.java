@@ -102,4 +102,18 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    @Override
+    public List<Task> getTaskByByDistrict(String district) {
+        log.info("开始获取"+district+"区域的任务");
+        try {
+            List<Task> goingTasks = taskDao.getTaskByByDistrict(district);
+            log.info("获取"+district+"区域的任务结束");
+            return goingTasks;
+        } catch (Exception e) {
+            log.info("获取"+district+"区域的任务异常：");
+            log.info(e.toString());
+            return null;
+        }
+    }
+
 }

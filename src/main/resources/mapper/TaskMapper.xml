@@ -68,4 +68,7 @@
         SELECT * FROM rescue_task WHERE district = #{district} AND end is null
     </select>
 
+    <select id="getTaskByByDistrict" resultType="com.rescue.team.bean.Task" parameterType="java.lang.String">
+        SELECT * FROM rescue_task WHERE district = #{district}
+    </select>
 </mapper>

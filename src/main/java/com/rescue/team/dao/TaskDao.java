@@ -20,4 +20,6 @@ public interface TaskDao {
 
     List<Task> getGoingTasksByDistrict(String district);
 
+    List<Task> getTaskByByDistrict(String district);
+
 }
