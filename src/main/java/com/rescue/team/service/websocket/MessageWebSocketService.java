@@ -79,8 +79,14 @@ public class MessageWebSocketService {
 
         //将消息存储到历史消息list中
         List<Message> messageList = historyMessageMap.get("message" + message.getTid());
-        messageList.add(message);
-        historyMessageMap.put("message" + message.getTid(), messageList);
+        if (messageList==null) {
+            List<Message> list = new ArrayList<>();
+            list.add(message);
+            historyMessageMap.put("message" + message.getTid(), list);
+        } else {
+            messageList.add(message);
+            historyMessageMap.put("message" + message.getTid(), messageList);
+        }
 
         //为所有用户推送所有信息
         List<MessageWebSocketService> list = webSocketClientMap.get("message" + message.getTid());

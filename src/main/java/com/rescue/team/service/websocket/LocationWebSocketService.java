@@ -76,9 +76,16 @@ public class LocationWebSocketService {
         location.setLatitude(json.getDouble("latitude"));
 
         Map<String, Location> locationMap = allLocations.get("location" + location.getTid());
-        locationMap.put(location.getVid(),location);
-        allLocations.put("location" + location.getTid(),locationMap);
+        if(locationMap==null) {
+            Map<String,Location> map = new HashMap<>();
+            map.put(location.getVid(),location);
+            allLocations.put("location" + location.getTid(),map);
+        } else {
+            locationMap.put(location.getVid(),location);
+            allLocations.put("location" + location.getTid(),locationMap);
+        }
 
+        locationMap = allLocations.get("location" + location.getTid());
         List<LocationWebSocketService> list = webSocketClientMap.get("location" + location.getTid());
         if(list!=null) {
             List<Location> locationList = new ArrayList<>();
