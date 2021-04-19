@@ -86,35 +86,4 @@ public class ThirdPartController {
         return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
     }
 
-    @ApiOperation("人脸对比接口|传参待核实的老人的图片")
-    @PostMapping("/comparedFace")
-    public ResponseData faceCompared(@RequestParam("photo") MultipartFile file) {
-        if (!file.isEmpty()) {
-            String filename = file.getOriginalFilename();
-            int index = 0;
-            String type = null;
-            if (filename != null) {
-                index = filename.lastIndexOf(".");
-                type = filename.substring(index+1);
-            } else {
-                return new ResponseData(ResponseState.FILE_NAME_NULL.getValue(), ResponseState.FILE_NAME_NULL.getMessage());
-            }
-
-            boolean isPicture = FileUtil.isPicture(type);
-            if(isPicture) {
-                String result = ossService.uploadFace(file,type);
-                if (result.equals("error")) {
-                    return new ResponseData(ResponseState.FILE_UPLOAD_ERROR.getValue(), ResponseState.FILE_UPLOAD_ERROR.getMessage());
-                } else {
-                    boolean b = faceService.searchFace(result);
-                    if(b) return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
-                    else return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
-                }
-            } else {
-                return new ResponseData(ResponseState.FILE_TYPE_ERROR.getValue(), ResponseState.FILE_TYPE_ERROR.getMessage());
-            }
-        } else {
-            return new ResponseData(ResponseState.File_IS_EMPTY.getValue(), ResponseState.File_IS_EMPTY.getMessage());
-        }
-    }
 }

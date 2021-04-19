@@ -33,7 +33,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/v2/api-docs",
             "/swagger-ui.html",
             "**/websocket/**",
-            "/third/**"
+            "/third/**",
+            "/face/compared"
     };
 
     @Override
