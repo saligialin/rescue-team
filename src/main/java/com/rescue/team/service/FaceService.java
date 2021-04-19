@@ -9,7 +9,7 @@ public interface FaceService {
 
     boolean addFace(String id, String url);
 
-    boolean searchFace(String url);
+    boolean searchFace(String url, String eid);
 
     boolean deleteEntity(String id);
 }

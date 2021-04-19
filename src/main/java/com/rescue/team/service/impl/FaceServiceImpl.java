@@ -65,7 +65,7 @@ public class FaceServiceImpl implements FaceService {
         }
     }
 
-    public boolean searchFace(String url) {
+    public boolean searchFace(String url, String eid) {
         try {
             Client client = getClient();
             SearchFaceRequest request = new SearchFaceRequest()
@@ -85,8 +85,10 @@ public class FaceServiceImpl implements FaceService {
             List faceItems = (List) matchListJson.get("faceItems");
             JSONObject faceItemsJson = JSON.parseObject(faceItems.get(0).toString());
 
+            System.out.println(faceItemsJson);
             Double score = faceItemsJson.getDouble("score");
-            if(score>0.5) return true;
+            String entityId = faceItemsJson.getString("entityId");
+            if(score>0.5&&entityId.equals(eid)) return true;
             else return false;
 
         } catch (Exception e) {

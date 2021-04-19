@@ -25,9 +25,13 @@ public class FaceController {
 
     @ApiOperation("人脸对比接口|传参待核实的老人的图片url")
     @PostMapping("/compared")
-    public ResponseData faceCompared(@ApiJsonObject(name = "faceCompared",value = @ApiJsonProperty(key = "photo",example = "照片访问url")) @RequestBody Map<String,String> parameter) {
+    public ResponseData faceCompared(@ApiJsonObject(name = "faceCompared",value = {
+            @ApiJsonProperty( key = "photo", example = "待识别照片"),
+            @ApiJsonProperty( key = "eid", example = "老人ID")
+    }) @RequestBody Map<String, String> parameter) {
         String photo = parameter.get("photo");
-        boolean b = faceService.searchFace(photo);
+        String eid = parameter.get("eid");
+        boolean b = faceService.searchFace(photo,eid);
         if(b) return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
         else return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
     }
