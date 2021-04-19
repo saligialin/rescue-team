@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 public class PhotoServiceImpl implements PhotoService {
@@ -84,5 +87,22 @@ public class PhotoServiceImpl implements PhotoService {
             log.info(e.toString());
             return false;
         }
+    }
+
+    @Override
+    public List<String> getPhotoList(Photo photo) {
+        log.info("开始将老人的照片封装在list中");
+        List<String> list = new ArrayList<>();
+        if (photo.getPhoto1()!=null) list.add(photo.getPhoto1());
+        if (photo.getPhoto2()!=null) list.add(photo.getPhoto2());
+        if (photo.getPhoto3()!=null) list.add(photo.getPhoto3());
+        if (photo.getPhoto4()!=null) list.add(photo.getPhoto4());
+        if (photo.getPhoto5()!=null) list.add(photo.getPhoto5());
+        if (photo.getPhoto6()!=null) list.add(photo.getPhoto6());
+        if (photo.getPhoto7()!=null) list.add(photo.getPhoto7());
+        if (photo.getPhoto8()!=null) list.add(photo.getPhoto8());
+        if (photo.getPhoto9()!=null) list.add(photo.getPhoto9());
+        log.info("将老人的照片封装在list中结束");
+        return list;
     }
 }
