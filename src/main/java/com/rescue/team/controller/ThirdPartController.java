@@ -30,12 +30,6 @@ public class ThirdPartController {
     @Autowired
     private PhotoService photoService;
 
-    @Autowired
-    private FaceService faceService;
-
-    @Autowired
-    private OssService ossService;
-
     @ApiOperation("根据区/县名获取该地区正在进行的任务|传参district：县/区名")
     @GetMapping("/getGoingByDistrict/{district}")
     public ResponseData getGoingTasksByDistrict(@PathVariable("district")String district) {
@@ -49,20 +43,24 @@ public class ThirdPartController {
         }
     }
 
-    @ApiOperation("根据区/县名获取该地区所有的任务|传参district：县/区名")
-    @GetMapping("/getTasksByDistrict/{district}")
-    public ResponseData getTasksByDistrict(@PathVariable("district")String district) {
-        List<Task> tasks = taskService.getTaskByByDistrict(district);
-        if(tasks==null||tasks.isEmpty()) return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
-        List<Task> going = new ArrayList<>();
-        List<Task> done = new ArrayList<>();
+    @ApiOperation("获取正在进行的任务")
+    @GetMapping("/getGoingTasks")
+    public ResponseData getGoingTasks() {
+        List<Task> tasks = taskService.getTasks();
+        if(tasks==null) return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        if(tasks.isEmpty()) return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
+        List<Map<String,Object>> list = new ArrayList<>();
         for (Task task : tasks) {
-            if(task.getEnd()==null) going.add(task);
-            else done.add(task);
+            Map<String,Object> info = new HashMap<>();
+            info.put("task",task);
+            Elder elder = elderService.getElderByEid(task.getEid());
+            info.put("elder",elder);
+            Photo photo = photoService.getPhotoByEid(task.getEid());
+            info.put("photo",photo);
+            list.add(info);
         }
-        Map<String,Object> data = new HashMap<>();
-        data.put("going",going);
-        data.put("done",done);
+        Map<String, Object> data = new HashMap<>();
+        data.put("result", list);
         return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
     }
 
