@@ -62,7 +62,7 @@ public class TaskController {
                     return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
                 } else {
                     boolean sendTaskCode = msgSendService.sendTaskCode(tels, code);
-                    if(!sendTaskCode) {
+                    if(sendTaskCode) {
                         for (String url : photoList) {
                             faceService.addFace(task.getEid(),url);
                         }
