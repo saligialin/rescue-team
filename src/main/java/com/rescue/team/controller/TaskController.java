@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "任务相关控制器")
+@Api(tags = "任务相关接口")
 @RestController
 @RequestMapping("/task")
 public class TaskController {

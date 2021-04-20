@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/elder")
-@Api(tags = "老人相关控制器")
+@Api(tags = "老人相关接口")
 public class ElderController {
 
     @Autowired

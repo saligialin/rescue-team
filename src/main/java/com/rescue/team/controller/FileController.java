@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/file")
-@Api(tags = "文件(照片)相关操作控制器")
+@Api(tags = "文件(照片)上传接口")
 public class FileController {
 
     @Autowired

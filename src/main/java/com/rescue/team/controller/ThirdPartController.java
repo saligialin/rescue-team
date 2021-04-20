@@ -3,19 +3,17 @@ package com.rescue.team.controller;
 import com.rescue.team.bean.*;
 import com.rescue.team.bean.state.ResponseState;
 import com.rescue.team.service.*;
-import com.rescue.team.utils.FileUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "第三方接口控制器")
+@Api(tags = "第三方接口")
 @RestController
 @RequestMapping("/third")
 public class ThirdPartController {

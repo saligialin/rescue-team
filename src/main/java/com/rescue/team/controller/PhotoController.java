@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/photo")
-@Api(tags = "老人照片组相关操作控制器")
+@Api(tags = "老人照片相关接口")
 public class PhotoController {
 
     @Autowired

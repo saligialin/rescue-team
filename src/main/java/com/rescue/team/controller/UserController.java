@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @RestController
 @RequestMapping("/user")
-@Api(tags = "用户相关操作控制器")
+@Api(tags = "用户相关接口")
 public class UserController {
 
     @Autowired

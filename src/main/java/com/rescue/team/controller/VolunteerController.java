@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "志愿者相关控制器")
+@Api(tags = "志愿者相关接口")
 @RestController
 @RequestMapping("/volunteer")
 public class VolunteerController {

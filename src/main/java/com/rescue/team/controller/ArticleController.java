@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/article")
-@Api(tags = "文章相关操作控制器")
+@Api(tags = "文章相关接口")
 public class ArticleController {
 
     @Autowired
