@@ -34,13 +34,11 @@ public class ThirdPartController {
     @GetMapping("/getGoingByDistrict/{district}")
     public ResponseData getGoingTasksByDistrict(@PathVariable("district")String district) {
         List<Task> tasks = taskService.getGoingTasksByDistrict(district);
-        if (tasks==null||tasks.isEmpty()) {
-            return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
-        } else {
-            Map<String,Object> data = new HashMap<>();
-            data.put("tasks",tasks);
-            return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
-        }
+        if (tasks==null)  return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+        if (tasks.isEmpty()) return new ResponseData(ResponseState.RESULT_IS_NULL.getValue(), ResponseState.RESULT_IS_NULL.getMessage());
+        Map<String,Object> data = new HashMap<>();
+        data.put("tasks",tasks);
+        return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage(), data);
     }
 
     @ApiOperation("获取正在进行的任务")
