@@ -52,6 +52,8 @@ public class ThirdPartController {
             Map<String,Object> info = new HashMap<>();
             info.put("task",task);
             Elder elder = elderService.getElderByEid(task.getEid());
+            elder.setFront_card(null);
+            elder.setBack_card(null);
             info.put("elder",elder);
             Photo photo = photoService.getPhotoByEid(task.getEid());
             info.put("photo",photo);
@@ -74,6 +76,9 @@ public class ThirdPartController {
         User user = userService.getUserByUid(elder.getUid());
         if(user==null) return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
         Photo photo = photoService.getPhotoByEid(elder.getEid());
+
+        elder.setFront_card(null);
+        elder.setBack_card(null);
         Map<String, Object> data = new HashMap<>();
         data.put("task",task);
         data.put("elder",elder);
