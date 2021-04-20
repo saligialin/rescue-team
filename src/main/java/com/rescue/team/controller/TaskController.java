@@ -55,21 +55,22 @@ public class TaskController {
             List<String> tels = volunteerService.getVolunteerTels(task);
             if(tels==null) return new ResponseData(ResponseState.NO_VOLUNTEER_HERE.getValue(), ResponseState.NO_VOLUNTEER_HERE.getMessage());
             try {
-                boolean sendTaskCode = msgSendService.sendTaskCode(tels, code);
-                if(sendTaskCode) {
-                    boolean addEntity = faceService.addEntity(task.getEid());
-                    if (!addEntity) {
-                        Task tmp = taskService.getTaskByCode(code);
-                        boolean deleteTask = taskService.deleteTask(tmp.getTid());
-                        return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
-                    } else {
+                boolean addEntity = faceService.addEntity(task.getEid());
+                if (!addEntity) {
+                    Task tmp = taskService.getTaskByCode(code);
+                    boolean deleteTask = taskService.deleteTask(tmp.getTid());
+                    return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
+                } else {
+                    boolean sendTaskCode = msgSendService.sendTaskCode(tels, code);
+                    if(!sendTaskCode) {
                         for (String url : photoList) {
                             faceService.addFace(task.getEid(),url);
                         }
                         return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
+                    } else {
+                        boolean deleteEntity = faceService.deleteEntity(task.getEid());
+                        return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
                     }
-                } else {
-                    return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
                 }
             } catch (Exception e) {
                 return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
