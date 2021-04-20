@@ -22,4 +22,6 @@ public interface TaskDao {
 
     List<Task> getTaskByByDistrict(String district);
 
+    List<Task> getTasks();
+
 }

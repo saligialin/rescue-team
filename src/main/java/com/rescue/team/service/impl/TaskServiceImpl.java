@@ -116,4 +116,18 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    @Override
+    public List<Task> getTasks() {
+        log.info("开始获取正在进行的任务");
+        try {
+            List<Task> tasks = taskDao.getTasks();
+            log.info("获取正在进行的任务结束");
+            return tasks;
+        } catch (Exception e) {
+            log.info("获取正在进行的任务异常：");
+            log.info(e.toString());
+            return null;
+        }
+    }
+
 }

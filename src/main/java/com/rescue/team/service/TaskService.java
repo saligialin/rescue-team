@@ -22,4 +22,5 @@ public interface TaskService {
 
     List<Task> getTaskByByDistrict(String district);
 
+    List<Task> getTasks();
 }
