@@ -55,6 +55,8 @@ public class ThirdPartController {
             info.put("elder",elder);
             Photo photo = photoService.getPhotoByEid(task.getEid());
             info.put("photo",photo);
+            User user = userService.getUserByUid(elder.getUid());
+            info.put("family",user);
             list.add(info);
         }
         Map<String, Object> data = new HashMap<>();
