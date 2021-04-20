@@ -98,19 +98,19 @@
     </update>
 
     <select id="getTelsByDistrict" resultType="java.lang.String" parameterType="java.lang.String">
-        SELECT tel FROM rescue_volunteer WHERE district = #{district}
+        SELECT tel FROM rescue_volunteer WHERE district = #{district} AND status = 1
     </select>
 
     <select id="getCountByDistrict" resultType="java.lang.Integer" parameterType="java.lang.String" >
-        SELECT COUNT(*) FROM rescue_volunteer WHERE district = #{district}
+        SELECT COUNT(*) FROM rescue_volunteer WHERE district = #{district} AND status = 1
     </select>
 
     <select id="getTelsByCity" resultType="java.lang.String" parameterType="java.lang.String">
-        SELECT tel FROM rescue_volunteer WHERE city = #{city}
+        SELECT tel FROM rescue_volunteer WHERE city = #{city} AND status = 1
     </select>
 
     <select id="getCountByCity" resultType="java.lang.Integer" parameterType="java.lang.String" >
-        SELECT COUNT(*) FROM rescue_volunteer WHERE city = #{city}
+        SELECT COUNT(*) FROM rescue_volunteer WHERE city = #{city} AND status = 1
     </select>
 
 </mapper>
