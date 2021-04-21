@@ -41,8 +41,8 @@
             <if test=" front_card != null">
                 front_card = #{front_card},
             </if>
-            <if test=" back_ground != null">
-                back_ground = #{back_ground},
+            <if test=" back_card != null">
+                back_card = #{back_card},
             </if>
             <if test=" longitude != null" >
                 longitude = #{longitude},
