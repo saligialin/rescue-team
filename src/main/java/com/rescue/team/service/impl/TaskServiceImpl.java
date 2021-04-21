@@ -130,4 +130,15 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
+    @Override
+    public boolean taskIsGoing(String eid) {
+        log.info("正在查询该老人的救援是否在进行");
+        try {
+            Integer count = taskDao.isGoing(eid);
+            return count > 0;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
 }
