@@ -45,6 +45,8 @@ public class TaskController {
     @ApiOperation("新增任务|传参除结束时间end、tid、code之外全部")
     @PostMapping("/addTask")
     public ResponseData addTask(@RequestBody Task task) {
+        boolean isGoing = taskService.taskIsGoing(task.getEid());
+        if (!isGoing) return new ResponseData(ResponseState.TASK_IS_GOING.getValue(), ResponseState.TASK_IS_GOING.getMessage());
         Photo photo = photoService.getPhotoByEid(task.getEid());
         List<String> photoList = photoService.getPhotoList(photo);
         if(photoList.isEmpty()) return new ResponseData(ResponseState.ELDER_NO_PHOTO.getValue(), ResponseState.ELDER_NO_PHOTO.getMessage());

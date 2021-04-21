@@ -15,7 +15,7 @@ public enum ResponseState {
     File_IS_EMPTY("文件为空",108),
     FILE_NAME_NULL("文件名为空",109),
     RESULT_IS_NULL("返回结果为空",111),
-    ALREADY_DID_IT("此行为已经操作过",111),
+    TASK_IS_GOING("任务正在进行中",111),
     TASK_NOT_EXIST("任务不存在",112),
     TOKEN_NOT_PROVIDE("未提供token",113),
     TOKEN_IS_ERROR("token错误",114),
