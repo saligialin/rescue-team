@@ -76,7 +76,7 @@
         SELECT * FROM rescue_task WHERE end is null
     </select>
 
-    <select id="isGoing" resultType="java.lang.Integer" parameterType="java.lang.String">
-        SELECT COUNT(*) FROM rescue_task WHERE eid = #{eid} AND end is null
+    <select id="isGoing" resultType="com.rescue.team.bean.Task" parameterType="java.lang.String">
+        SELECT * FROM rescue_task WHERE eid = #{eid} AND end is null
     </select>
 </mapper>

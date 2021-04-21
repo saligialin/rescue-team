@@ -24,6 +24,6 @@ public interface TaskDao {
 
     List<Task> getTasks();
 
-    Integer isGoing(String eid);
+    Task isGoing(String eid);
 
 }
