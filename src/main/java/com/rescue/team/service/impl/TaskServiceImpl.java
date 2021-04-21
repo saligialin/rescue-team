@@ -135,7 +135,7 @@ public class TaskServiceImpl implements TaskService {
         log.info("正在查询该老人的救援是否在进行");
         try {
             Task task = taskDao.isGoing(eid);
-            return task != null;
+            return task == null;
         } catch (Exception e) {
             return true;
         }
