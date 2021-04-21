@@ -24,6 +24,8 @@ public class LocationWebSocketService {
 
     private Session session;
 
+    private String vid;
+
     @OnOpen
     public void onOpen(Session session, @PathParam("tid") String tid) {
         log.info("新的连接建立");
@@ -52,6 +54,9 @@ public class LocationWebSocketService {
     @OnClose
     public void onClose(Session session, @PathParam("tid") String tid) {
         log.info("一连接关闭");
+        Map<String, Location> locationMap = allLocations.get("location" + tid);
+        locationMap.remove(this.vid);
+        allLocations.put("location" + tid, locationMap);
         List<LocationWebSocketService> list = webSocketClientMap.get("location" + tid);
         list.remove(this);
         webSocketClientMap.put("location"+tid,list);
@@ -74,6 +79,8 @@ public class LocationWebSocketService {
         location.setName(json.getString("name"));
         location.setLongitude(json.getDouble("longitude"));
         location.setLatitude(json.getDouble("latitude"));
+
+        this.vid = json.getString("vid");
 
         Map<String, Location> locationMap = allLocations.get("location" + location.getTid());
         if(locationMap==null) {
