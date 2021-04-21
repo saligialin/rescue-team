@@ -88,8 +88,9 @@ public class TaskController {
     public ResponseData endTask(@RequestBody Task task) {
         task.setEnd(new Date());
         boolean b = taskService.changeTask(task);
+        Task endTask = taskService.getTaskByTid(task.getTid());
         if(b) {
-            boolean deleteEntity = faceService.deleteEntity(task.getEid());
+            boolean deleteEntity = faceService.deleteEntity(endTask.getEid());
             return new ResponseData(ResponseState.SUCCESS.getValue(), ResponseState.SUCCESS.getMessage());
         } else {
             return new ResponseData(ResponseState.ERROR.getValue(), ResponseState.ERROR.getMessage());
