@@ -14,15 +14,16 @@ public enum ResponseState {
     FILE_TYPE_ERROR("文件类型错误",107),
     File_IS_EMPTY("文件为空",108),
     FILE_NAME_NULL("文件名为空",109),
-    RESULT_IS_NULL("返回结果为空",111),
-    TASK_IS_GOING("任务正在进行中",111),
+    RESULT_IS_NULL("返回结果为空",110),
+    ALREADY_DID_IT("操作重复",111),
     TASK_NOT_EXIST("任务不存在",112),
     TOKEN_NOT_PROVIDE("未提供token",113),
     TOKEN_IS_ERROR("token错误",114),
     TOKEN_IS_EXPIRED("token过期",115),
     NO_VOLUNTEER_HERE("这个城市没有可服务的志愿者",116),
     ELDER_NO_PHOTO("该老人无照片",117),
-    TASK_YET_END("任务已结束",118)
+    TASK_YET_END("任务已结束",118),
+    TASK_IS_GOING("任务正在进行中",119)
     ;
 
     private String message;
